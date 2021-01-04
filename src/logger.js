@@ -3,6 +3,10 @@ const CircularJSON = require('circular-json');
 const _ = require('lodash');
 
 /**
+ * @typedef {import('axios').AxiosError} AxiosError
+ */
+
+/**
  * @param {number} maxLength
  * @param {string} string
  */
@@ -14,7 +18,7 @@ function truncateString(maxLength, string) {
 }
 
 /**
- * @param {any} error
+ * @param {AxiosError} error
  */
 function axiosErrorConfigToLoggableObject(error) {
   const returnError = {
