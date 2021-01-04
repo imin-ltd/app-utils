@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Core functionality for imin apps",
   "main": "src/index.js",
+  "types": "built-types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "tsc"
