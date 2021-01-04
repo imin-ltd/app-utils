@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "built-types/",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "checkJs": true,
+    "downlevelIteration": true,
+    "target": "ES2019",
+    "moduleResolution": "node",
+    "strict": true
+  },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.d.ts"
+  ]
+}
