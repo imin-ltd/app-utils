@@ -5,21 +5,43 @@ const { logger } = require('./logger');
 const { port } = require('./utils/port');
 
 /**
- * @param {object} [options]
- * @param {{
+ * @typedef {{
  *   user: string;
  *   password: string;
  *   host: string;
  *   database: string;
- * }} [options.postgresConnection] If excluded, defaults to using, from environment vars:
+ * }} PostgresConnection
+ */
+
+/**
+ * @param {object} [options]
+ * @param {PostgresConnection} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`.
+ *   Alternatively, if `DATABASE_URL` is set, as will be the case for Heroku PostgreSQL,
+ *   this is used.
  * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
  */
 async function syncDbMigrations(options) {
-  const postgresConnection = options?.postgresConnection ?? getPostgresConnectionFromEnvVars();
   const doStartDummyExpressServer = options?.doStartDummyExpressServer ?? true;
   logger.info('syncDbMigrations() - syncing..');
-  const dbMigrate = DBMigrate.getInstance(true, {
+  const dbMigrate = getDbMigrateInstance(options?.postgresConnection);
+  const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
+  if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
+  await dbMigrate.up();
+  logger.info('syncDbMigrations() - synced');
+}
+
+/**
+ * @param {PostgresConnection} [maybePostgresConnection] 
+ */
+function getDbMigrateInstance(maybePostgresConnection) {
+  if (!maybePostgresConnection && process.env.DATABASE_URL) {
+    // See: https://db-migrate.readthedocs.io/en/latest/Getting%20Started/configuration/#database_url
+    // > Alternatively, you can specify a DATABASE_URL environment variable that will be used in place of the configuration file settings. This is helpful for use with Heroku.
+    return DBMigrate.getInstance(true);
+  }
+  const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
+  return DBMigrate.getInstance(true, {
     config: {
       defaultEnv: 'postgres',
       postgres: {
@@ -28,10 +50,6 @@ async function syncDbMigrations(options) {
       },
     },
   });
-  const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
-  await dbMigrate.up();
-  if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
-  logger.info('syncDbMigrations() - synced');
 }
 
 /**
@@ -69,6 +87,9 @@ async function stopDummyExpressServer(dummyServer) {
   });
 }
 
+/**
+ * @returns {PostgresConnection}
+ */
 function getPostgresConnectionFromEnvVars() {
   return {
     user: getAndAssertEnvVar('POSTGRES_USER'),
