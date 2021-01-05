@@ -36,9 +36,26 @@ async function syncDbMigrations(options) {
  */
 function getDbMigrateInstance(maybePostgresConnection) {
   if (!maybePostgresConnection && process.env.DATABASE_URL) {
-    // See: https://db-migrate.readthedocs.io/en/latest/Getting%20Started/configuration/#database_url
-    // > Alternatively, you can specify a DATABASE_URL environment variable that will be used in place of the configuration file settings. This is helpful for use with Heroku.
-    return DBMigrate.getInstance(true);
+    // // See: https://db-migrate.readthedocs.io/en/latest/Getting%20Started/configuration/#database_url
+    // // > Alternatively, you can specify a DATABASE_URL environment variable that will be used in place of the configuration file settings. This is helpful for use with Heroku.
+    // https://github.com/db-migrate/node-db-migrate/issues/592#issuecomment-638794440
+    // return DBMigrate.getInstance(true);
+    return DBMigrate.getInstance(true, {
+      config: {
+        defaultEnv: 'postgres',
+        postgres: {
+          driver: 'pg',
+          url: {
+            ENV: 'DATABASE_URL',
+          },
+          ssl: {
+            // This is unfortunately required for Heroku as they use self-signed certificates.
+            // See the above github comment.
+            rejectUnauthorized: false,
+          },
+        },
+      },
+    });
   }
   const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
   return DBMigrate.getInstance(true, {
