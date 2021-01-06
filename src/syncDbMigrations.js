@@ -35,6 +35,8 @@ async function getDbMigrateInstance(maybePostgresConnection) {
       defaultEnv: 'postgres',
       postgres: {
         driver: 'pg',
+        // db-migrate has extraordinarily scant documentation about the exact nature of its configuration.
+        // But (upon experimentation) it seems to just be the node-postgres Pool configuration.
         ...(await getPgConfig(maybePostgresConnection)),
       },
     },
