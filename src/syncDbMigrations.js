@@ -128,10 +128,6 @@ const getRdsCert = pMemoize(async () => {
   const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2019-root.pem'));
   return raw.toString();
 });
-// async function getRdsCert() {
-//   return await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2015-root.pem'));
-// }
-
 
 /**
  * @param {string} envVarName
