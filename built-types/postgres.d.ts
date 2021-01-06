@@ -19,7 +19,7 @@ export type PostgresConnectionDetails = {
  * }} PostgresConnectionDetails
  */
 /**
- * @param {PostgresConnectionDetails} postgresConnectionOverride
+ * @param {PostgresConnectionDetails | null | undefined} [postgresConnectionOverride]
  */
-export function pool(postgresConnectionOverride: PostgresConnectionDetails): Promise<pg.Pool>;
+export function pool(postgresConnectionOverride?: PostgresConnectionDetails | null | undefined): Promise<pg.Pool>;
 import pg = require("pg");

@@ -16,7 +16,7 @@ const pg = require('pg');
  */
 
 /**
- * @param {PostgresConnectionDetails} postgresConnectionOverride
+ * @param {PostgresConnectionDetails | null | undefined} [postgresConnectionOverride]
  */
 async function pool(postgresConnectionOverride) {
   const pgConfig = await getPgConfig(postgresConnectionOverride);
@@ -25,7 +25,7 @@ async function pool(postgresConnectionOverride) {
 
 // TODO syncDbMigrations should use this if possible
 /**
- * @param {PostgresConnectionDetails} postgresConnectionOverride 
+ * @param {PostgresConnectionDetails | null | undefined} [postgresConnectionOverride]
  * @returns {Promise<import('pg').PoolConfig>}
  */
 async function getPgConfig(postgresConnectionOverride) {
