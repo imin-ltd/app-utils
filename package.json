@@ -35,6 +35,7 @@
     "db-migrate-pg": "^1.2.2",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
+    "p-memoize": "^4.0.1",
     "winston": "^3.3.3"
   }
 }

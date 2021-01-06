@@ -1,6 +1,9 @@
 // @ts-expect-error db-migrate has no types
 const DBMigrate = require('db-migrate');
 const express = require('express');
+const fs = require('fs').promises;
+const pMemoize = require('p-memoize');
+const path = require('path');
 const { logger } = require('./logger');
 const { port } = require('./utils/port');
 
@@ -13,6 +16,8 @@ const { port } = require('./utils/port');
  * }} PostgresConnection
  */
 
+// TODO TODO TODO turn off DATABASE_URL
+
 /**
  * @param {object} [options]
  * @param {PostgresConnection} [options.postgresConnection] If excluded, defaults to using, from environment vars:
@@ -24,7 +29,7 @@ const { port } = require('./utils/port');
 async function syncDbMigrations(options) {
   const doStartDummyExpressServer = options?.doStartDummyExpressServer ?? true;
   logger.info('syncDbMigrations() - syncing..');
-  const dbMigrate = getDbMigrateInstance(options?.postgresConnection);
+  const dbMigrate = await getDbMigrateInstance(options?.postgresConnection);
   const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
   if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
   await dbMigrate.up();
@@ -34,7 +39,7 @@ async function syncDbMigrations(options) {
 /**
  * @param {PostgresConnection} [maybePostgresConnection] 
  */
-function getDbMigrateInstance(maybePostgresConnection) {
+async function getDbMigrateInstance(maybePostgresConnection) {
   if (!maybePostgresConnection && process.env.DATABASE_URL) {
     // // See: https://db-migrate.readthedocs.io/en/latest/Getting%20Started/configuration/#database_url
     // // > Alternatively, you can specify a DATABASE_URL environment variable that will be used in place of the configuration file settings. This is helpful for use with Heroku.
@@ -64,6 +69,9 @@ function getDbMigrateInstance(maybePostgresConnection) {
       postgres: {
         driver: 'pg',
         ...postgresConnection,
+        // ssl: {
+        //   ca: await getRdsCert(),
+        // },
       },
     },
   });
@@ -115,6 +123,15 @@ function getPostgresConnectionFromEnvVars() {
     database: getAndAssertEnvVar('POSTGRES_DB'),
   };
 }
+
+const getRdsCert = pMemoize(async () => {
+  const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2015-root.pem'));
+  return raw.toString();
+});
+// async function getRdsCert() {
+//   return await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2015-root.pem'));
+// }
+
 
 /**
  * @param {string} envVarName
