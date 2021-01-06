@@ -44,7 +44,8 @@ const { syncDbMigrations } = require('@imin/app-utils');
 
 **ENV VARS**:
 
-* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: PostgreSQL connection details
+* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: (REQUIRED) PostgreSQL connection details
+* `POSTGRES_APP_NAME` (REQUIRED): Name of the app (e.g. `places`). This will be recorded in the connection, which is helpful for SQL debugging.
 * `POSTGRES_IS_RDS` (Optional): Set this to `true` if the DB is hosted in RDS. If true, the RDS CA cert will be used to connect with SSL.
 
 ### How to: Create Migration
