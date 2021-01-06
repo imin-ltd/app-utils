@@ -24,7 +24,7 @@ const { syncDbMigrations } = require('@imin/app-utils');
 (async () => {
   // Choose either of these approaches:
   // 1. No config. Uses default settings. Default settings include:
-  //   * Finding postgres connection details in either DATABASE_URL (for a Heroku database) env var or POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB env vars.
+  //   * Finding postgres connection details in POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB env vars.
   //   * Starting a dummy Express server (for Heroku apps: Allows migration to take longer than the Heroku app 30s boot timeout by launching a dummy express server which just returns 404 for all requests. The dummy express server is shut down once the migrations have been synced)
   await syncDbMigrations();
   // 2. Config. You can specify
@@ -41,6 +41,13 @@ const { syncDbMigrations } = require('@imin/app-utils');
   });
 })();
 ```
+
+**ENV VARS**:
+
+* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: PostgreSQL connection details
+* `POSTGRES_IS_RDS` (Optional): Set this to `true` if the DB is hosted in RDS. If true, the RDS CA cert will be used to connect with SSL.
+
+### How to: Create Migration
 
 ^ This is how you ensure that your app runs migrations when it starts. But how do you actually create migrations in your app:
 

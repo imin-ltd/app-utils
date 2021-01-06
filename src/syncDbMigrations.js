@@ -17,14 +17,10 @@ const { port } = require('./utils/port');
  * }} PostgresConnection
  */
 
-// TODO TODO TODO turn off DATABASE_URL
-
 /**
  * @param {object} [options]
  * @param {PostgresConnection} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`.
- *   Alternatively, if `DATABASE_URL` is set, as will be the case for Heroku PostgreSQL,
- *   this is used.
  * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
  */
 async function syncDbMigrations(options) {
@@ -41,39 +37,21 @@ async function syncDbMigrations(options) {
  * @param {PostgresConnection} [maybePostgresConnection] 
  */
 async function getDbMigrateInstance(maybePostgresConnection) {
-  if (!maybePostgresConnection && process.env.DATABASE_URL) {
-    // // See: https://db-migrate.readthedocs.io/en/latest/Getting%20Started/configuration/#database_url
-    // // > Alternatively, you can specify a DATABASE_URL environment variable that will be used in place of the configuration file settings. This is helpful for use with Heroku.
-    // https://github.com/db-migrate/node-db-migrate/issues/592#issuecomment-638794440
-    // return DBMigrate.getInstance(true);
-    return DBMigrate.getInstance(true, {
-      config: {
-        defaultEnv: 'postgres',
-        postgres: {
-          driver: 'pg',
-          url: {
-            ENV: 'DATABASE_URL',
-          },
-          ssl: {
-            // This is unfortunately required for Heroku as they use self-signed certificates.
-            // See the above github comment.
-            rejectUnauthorized: false,
-          },
-        },
-      },
-    });
-  }
   const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
+  /** @type {{ [k: string]: unknown }} */
+  const dbMigrateEnvConfig = {
+    driver: 'pg',
+    ...postgresConnection,
+  };
+  if (process.env.POSTGRES_IS_RDS === 'true') {
+    dbMigrateEnvConfig.ssl = {
+      ca: await getRdsCert(),
+    };
+  }
   return DBMigrate.getInstance(true, {
     config: {
       defaultEnv: 'postgres',
-      postgres: {
-        driver: 'pg',
-        ...postgresConnection,
-        ssl: {
-          ca: await getRdsCert(), // TODO only include this if POSTGRES_IS_RDS='true'
-        },
-      },
+      postgres: dbMigrateEnvConfig,
     },
   });
 }
