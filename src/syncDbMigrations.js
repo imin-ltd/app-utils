@@ -69,9 +69,9 @@ async function getDbMigrateInstance(maybePostgresConnection) {
       postgres: {
         driver: 'pg',
         ...postgresConnection,
-        // ssl: {
-        //   ca: await getRdsCert(),
-        // },
+        ssl: {
+          ca: await getRdsCert(),
+        },
       },
     },
   });
