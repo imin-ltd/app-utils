@@ -36,6 +36,8 @@ const { syncDbMigrations } = require('@imin/app-utils');
       password: '..',
       host: '..',
       database: '..',
+      appName: '..',
+      isRds: true,
     },
     doStartDummyExpressServer: false,
   });
@@ -44,9 +46,10 @@ const { syncDbMigrations } = require('@imin/app-utils');
 
 **ENV VARS**:
 
-* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: (REQUIRED) PostgreSQL connection details
+* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: (REQUIRED) PostgreSQL connection details.
 * `POSTGRES_APP_NAME` (REQUIRED): Name of the app (e.g. `places`). This will be recorded in the connection, which is helpful for SQL debugging.
-* `POSTGRES_IS_RDS` (Optional): Set this to `true` if the DB is hosted in RDS. If true, the RDS CA cert will be used to connect with SSL.
+* `POSTGRES_IS_RDS` (Optional - RECOMMENDED if using RDS): Set this to `true` if the DB is hosted in RDS. If true, the RDS root SSL cert will be used to connect.
+* `POSTGRES_NUM_CONNECTIONS` (Optional): Number of clients per pool - defaults to 10.
 
 ### How to: Create Migration
 
