@@ -4,6 +4,10 @@
   "description": "Core functionality for imin apps",
   "main": "src/index.js",
   "types": "built-types/index.d.ts",
+  "bin": {
+    "db-migrate-up": "./src/cli/db-migrate-up.js",
+    "db-migrate-down": "./src/cli/db-migrate-down.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "tsc"
@@ -33,6 +37,7 @@
     "circular-json": "^0.5.9",
     "db-migrate": "^0.11.12",
     "db-migrate-pg": "^1.2.2",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "p-memoize": "^4.0.1",

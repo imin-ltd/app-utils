@@ -1,4 +1,5 @@
 // @ts-expect-error db-migrate has no types
+// TODO: Create some typing for db-migrate
 const DBMigrate = require('db-migrate');
 const express = require('express');
 const fs = require('fs').promises;
@@ -70,7 +71,7 @@ async function getDbMigrateInstance(maybePostgresConnection) {
         driver: 'pg',
         ...postgresConnection,
         ssl: {
-          ca: await getRdsCert(),
+          ca: await getRdsCert(), // TODO only include this if POSTGRES_IS_RDS='true'
         },
       },
     },
@@ -142,4 +143,5 @@ function getAndAssertEnvVar(envVarName) {
 
 module.exports = {
   syncDbMigrations,
+  getDbMigrateInstance,
 };
