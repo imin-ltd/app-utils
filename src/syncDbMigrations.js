@@ -2,9 +2,10 @@
 // TODO: Create some typing for db-migrate
 const DBMigrate = require('db-migrate');
 const express = require('express');
-const fs = require('fs').promises;
-const pMemoize = require('p-memoize');
-const path = require('path');
+// const fs = require('fs').promises;
+// const { pick } = require('lodash');
+// const pMemoize = require('p-memoize');
+// const path = require('path');
 const { logger } = require('./logger');
 const { getPgConfig } = require('./postgres');
 const { port } = require('./utils/port');
@@ -58,7 +59,7 @@ async function getDbMigrateInstance(maybePostgresConnection) {
       defaultEnv: 'postgres',
       postgres: {
         driver: 'pg',
-        ...getPgConfig(maybePostgresConnection),
+        ...(await getPgConfig(maybePostgresConnection)),
       },
       // postgres: dbMigrateEnvConfig,
     },
@@ -100,33 +101,33 @@ async function stopDummyExpressServer(dummyServer) {
   });
 }
 
-/**
- * @returns {PostgresConnection}
- */
-function getPostgresConnectionFromEnvVars() {
-  return {
-    user: getAndAssertEnvVar('POSTGRES_USER'),
-    password: getAndAssertEnvVar('POSTGRES_PASSWORD'),
-    host: getAndAssertEnvVar('POSTGRES_HOST'),
-    database: getAndAssertEnvVar('POSTGRES_DB'),
-  };
-}
+// /**
+//  * @returns {PostgresConnection}
+//  */
+// function getPostgresConnectionFromEnvVars() {
+//   return {
+//     user: getAndAssertEnvVar('POSTGRES_USER'),
+//     password: getAndAssertEnvVar('POSTGRES_PASSWORD'),
+//     host: getAndAssertEnvVar('POSTGRES_HOST'),
+//     database: getAndAssertEnvVar('POSTGRES_DB'),
+//   };
+// }
 
-const getRdsCert = pMemoize(async () => {
-  const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2019-root.pem'));
-  return raw.toString();
-});
+// const getRdsCert = pMemoize(async () => {
+//   const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2019-root.pem'));
+//   return raw.toString();
+// });
 
-/**
- * @param {string} envVarName
- */
-function getAndAssertEnvVar(envVarName) {
-  const value = process.env[envVarName];
-  if (value == null || value === '') {
-    throw new Error(`Required env var "${envVarName}" is missing`);
-  }
-  return value;
-}
+// /**
+//  * @param {string} envVarName
+//  */
+// function getAndAssertEnvVar(envVarName) {
+//   const value = process.env[envVarName];
+//   if (value == null || value === '') {
+//     throw new Error(`Required env var "${envVarName}" is missing`);
+//   }
+//   return value;
+// }
 
 module.exports = {
   syncDbMigrations,
