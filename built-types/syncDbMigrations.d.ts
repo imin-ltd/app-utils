@@ -16,11 +16,13 @@ export type PostgresConnection = {
  * @param {object} [options]
  * @param {PostgresConnection} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`.
- *   Alternatively, if `DATABASE_URL` is set, as will be the case for Heroku PostgreSQL,
- *   this is used.
  * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
  */
 export function syncDbMigrations(options?: {
     postgresConnection?: PostgresConnection | undefined;
     doStartDummyExpressServer?: boolean | undefined;
 } | undefined): Promise<void>;
+/**
+ * @param {PostgresConnection} [maybePostgresConnection]
+ */
+export function getDbMigrateInstance(maybePostgresConnection?: PostgresConnection | undefined): Promise<any>;

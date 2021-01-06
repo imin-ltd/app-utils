@@ -1,3 +1,4 @@
 import { logger } from "./logger";
 import { syncDbMigrations } from "./syncDbMigrations";
-export { logger, syncDbMigrations };
+import { postgres } from "./postgres";
+export { logger, syncDbMigrations, postgres };
