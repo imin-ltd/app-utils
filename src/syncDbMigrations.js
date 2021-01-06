@@ -2,22 +2,9 @@
 // TODO: Create some typing for db-migrate
 const DBMigrate = require('db-migrate');
 const express = require('express');
-// const fs = require('fs').promises;
-// const { pick } = require('lodash');
-// const pMemoize = require('p-memoize');
-// const path = require('path');
 const { logger } = require('./logger');
 const { getPgConfig } = require('./postgres');
 const { port } = require('./utils/port');
-
-// /**
-//  * @typedef {{
-//  *   user: string;
-//  *   password: string;
-//  *   host: string;
-//  *   database: string;
-//  * }} PostgresConnection
-//  */
 
 /**
  * @typedef {import('./postgres').PostgresConnectionDetails} PostgresConnectionDetails
@@ -43,17 +30,6 @@ async function syncDbMigrations(options) {
  * @param {PostgresConnectionDetails} [maybePostgresConnection] 
  */
 async function getDbMigrateInstance(maybePostgresConnection) {
-  // const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
-  // /** @type {{ [k: string]: unknown }} */
-  // const dbMigrateEnvConfig = {
-  //   driver: 'pg',
-  //   ...postgresConnection,
-  // };
-  // if (process.env.POSTGRES_IS_RDS === 'true') {
-  //   dbMigrateEnvConfig.ssl = {
-  //     ca: await getRdsCert(),
-  //   };
-  // }
   return DBMigrate.getInstance(true, {
     config: {
       defaultEnv: 'postgres',
@@ -61,7 +37,6 @@ async function getDbMigrateInstance(maybePostgresConnection) {
         driver: 'pg',
         ...(await getPgConfig(maybePostgresConnection)),
       },
-      // postgres: dbMigrateEnvConfig,
     },
   });
 }
@@ -100,34 +75,6 @@ async function stopDummyExpressServer(dummyServer) {
     });
   });
 }
-
-// /**
-//  * @returns {PostgresConnection}
-//  */
-// function getPostgresConnectionFromEnvVars() {
-//   return {
-//     user: getAndAssertEnvVar('POSTGRES_USER'),
-//     password: getAndAssertEnvVar('POSTGRES_PASSWORD'),
-//     host: getAndAssertEnvVar('POSTGRES_HOST'),
-//     database: getAndAssertEnvVar('POSTGRES_DB'),
-//   };
-// }
-
-// const getRdsCert = pMemoize(async () => {
-//   const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2019-root.pem'));
-//   return raw.toString();
-// });
-
-// /**
-//  * @param {string} envVarName
-//  */
-// function getAndAssertEnvVar(envVarName) {
-//   const value = process.env[envVarName];
-//   if (value == null || value === '') {
-//     throw new Error(`Required env var "${envVarName}" is missing`);
-//   }
-//   return value;
-// }
 
 module.exports = {
   syncDbMigrations,

@@ -23,7 +23,6 @@ async function pool(postgresConnectionOverride) {
   return new pg.Pool(pgConfig);
 }
 
-// TODO syncDbMigrations should use this if possible
 /**
  * @param {PostgresConnectionDetails | null | undefined} [postgresConnectionOverride]
  * @returns {Promise<import('pg').PoolConfig>}
