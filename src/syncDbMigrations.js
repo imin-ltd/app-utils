@@ -6,21 +6,26 @@ const fs = require('fs').promises;
 const pMemoize = require('p-memoize');
 const path = require('path');
 const { logger } = require('./logger');
+const { getPgConfig } = require('./postgres');
 const { port } = require('./utils/port');
 
+// /**
+//  * @typedef {{
+//  *   user: string;
+//  *   password: string;
+//  *   host: string;
+//  *   database: string;
+//  * }} PostgresConnection
+//  */
+
 /**
- * @typedef {{
- *   user: string;
- *   password: string;
- *   host: string;
- *   database: string;
- * }} PostgresConnection
+ * @typedef {import('./postgres').PostgresConnectionDetails} PostgresConnectionDetails
  */
 
 /**
  * @param {object} [options]
- * @param {PostgresConnection} [options.postgresConnection] If excluded, defaults to using, from environment vars:
- *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`.
+ * @param {PostgresConnectionDetails} [options.postgresConnection] If excluded, defaults to using, from environment vars:
+ *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_APP_NAME`.
  * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
  */
 async function syncDbMigrations(options) {
@@ -34,24 +39,28 @@ async function syncDbMigrations(options) {
 }
 
 /**
- * @param {PostgresConnection} [maybePostgresConnection] 
+ * @param {PostgresConnectionDetails} [maybePostgresConnection] 
  */
 async function getDbMigrateInstance(maybePostgresConnection) {
-  const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
-  /** @type {{ [k: string]: unknown }} */
-  const dbMigrateEnvConfig = {
-    driver: 'pg',
-    ...postgresConnection,
-  };
-  if (process.env.POSTGRES_IS_RDS === 'true') {
-    dbMigrateEnvConfig.ssl = {
-      ca: await getRdsCert(),
-    };
-  }
+  // const postgresConnection = maybePostgresConnection ?? getPostgresConnectionFromEnvVars();
+  // /** @type {{ [k: string]: unknown }} */
+  // const dbMigrateEnvConfig = {
+  //   driver: 'pg',
+  //   ...postgresConnection,
+  // };
+  // if (process.env.POSTGRES_IS_RDS === 'true') {
+  //   dbMigrateEnvConfig.ssl = {
+  //     ca: await getRdsCert(),
+  //   };
+  // }
   return DBMigrate.getInstance(true, {
     config: {
       defaultEnv: 'postgres',
-      postgres: dbMigrateEnvConfig,
+      postgres: {
+        driver: 'pg',
+        ...getPgConfig(maybePostgresConnection),
+      },
+      // postgres: dbMigrateEnvConfig,
     },
   });
 }
