@@ -51,8 +51,19 @@ const { syncDbMigrations } = require('@imin/app-utils');
   ```
   Note that the DATABASE_URL doesn't actually matter for this command.
 
-You can then run migrations locally (to test them) with:
+### Sync migrations CLI
 
-```sh
-DATABASE_URL={{ DATABASE_URL }} npx db-migrate up
-```
+@imin/app-utils provides 2 scripts for quickly testing migrations:
+
+1. Up-migrate:
+
+  ```sh
+  npx db-migrate-up
+  ```
+2. Down-migrate:
+
+  ```sh
+  npx db-migrate-down
+  ```
+
+**NOTE: These scripts get PostgreSQL config from `.env` in your project**
