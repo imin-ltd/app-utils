@@ -72,7 +72,5 @@ const getRdsCert = pMemoize(async () => {
 });
 
 module.exports = {
-  postgres: {
-    pool,
-  },
+  pool,
 };

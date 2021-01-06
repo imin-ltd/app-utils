@@ -1,4 +1,4 @@
 import { logger } from "./logger";
 import { syncDbMigrations } from "./syncDbMigrations";
-import { postgres } from "./postgres";
+import postgres = require("./postgres");
 export { logger, syncDbMigrations, postgres };

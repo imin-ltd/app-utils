@@ -21,9 +21,5 @@ export type PostgresConnectionDetails = {
 /**
  * @param {PostgresConnectionDetails} postgresConnectionOverride
  */
-declare function pool(postgresConnectionOverride: PostgresConnectionDetails): Promise<pg.Pool>;
+export function pool(postgresConnectionOverride: PostgresConnectionDetails): Promise<pg.Pool>;
 import pg = require("pg");
-declare namespace postgres {
-    export { pool };
-}
-export {};
