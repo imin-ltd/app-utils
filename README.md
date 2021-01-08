@@ -8,11 +8,29 @@ app-utils defines a (winston) logger when it is used. This logger can be used in
 
 ```js
 const { logger } = require('@imin/app-utils');
+
+logger.error('something bad happened', { thingId: 'abc1', error });
 ```
 
 By default, its log level is set to `info` (i.e. `debug` messages will not be logged) but you can change this by:
 
 * **Setting env var: `LOG_LEVEL`**: Available values: `debug`, `info`, `warn`, `error`.
+
+### Errors
+
+In the object that you can pass to log calls, there's a special field: `error`. If there's a JS Error that you want to log, make sure to include it in the error field, e.g.:
+
+```js
+try {
+  console.log(variableThatDoesntExist);
+} catch (error) {
+  logger.error('the bad thing happened', { error });
+}
+```
+
+The logger will make sure to structure the Error object correctly, so that it's outputted with fields like `stack`, etc. This special handling is needed because JS Error fields are special and do not copy into other objects normally.
+
+If the error is an **Axios error**, we have more special handling still! Axios errors are famously large and contain lots and lots of generally irrelevant information. So if you include an axios error in the `error` field, logger will only include key details about the HTTP request and response.
 
 ## PostgreSQL
 
