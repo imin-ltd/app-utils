@@ -53,13 +53,15 @@ const { syncDbMigrations } = require('@imin/app-utils');
 
 ### How to: Create Migration
 
-^ This is how you ensure that your app runs migrations when it starts. But how do you actually create migrations in your app:
+The above explains how you ensure that your app runs migrations when it starts. But how do you actually create migrations in your app:
 
 1. `npm install --save-dev db-migrate`
 2. Create a database migration:
+
   ```sh
   DATABASE_URL=postgresql://master:password@localhost:5432/db npx db-migrate create {{ migration-name }} --sql-file
   ```
+
   Note that the DATABASE_URL doesn't actually matter for this command.
 
 ### Sync migrations CLI
@@ -71,6 +73,7 @@ const { syncDbMigrations } = require('@imin/app-utils');
   ```sh
   npx db-migrate-up
   ```
+
 2. Down-migrate:
 
   ```sh
