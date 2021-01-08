@@ -14,9 +14,46 @@ By default, its log level is set to `info` (i.e. `debug` messages will not be lo
 
 * **Setting env var: `LOG_LEVEL`**: Available values: `debug`, `info`, `warn`, `error`.
 
-## PostgreSQL Migrations (with db-migrate)
+## PostgreSQL
 
-If your app has a PostgreSQL database, you can set up migrations using db-migrate - via `@imin/app-utils`. Like so:
+You can use `@imin/app-utils` to connect with a PostgreSQL database. In order to do this, it is advised to set up environment variables for PostgreSQL connection details (detailed below), though in some cases, connection details can be provided programmatically.
+
+`@imin/app-utils` uses [node-postgres](https://node-postgres.com/) to connect to PostgreSQL.
+
+**ENV VARS**:
+
+* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: (REQUIRED) PostgreSQL connection details.
+* `POSTGRES_APP_NAME` (REQUIRED): Name of the app (e.g. `places`). This will be recorded in the connection, which is helpful for SQL debugging.
+* `POSTGRES_IS_RDS` (Optional - RECOMMENDED if using RDS): Set this to `true` if the DB is hosted in RDS. If true, the RDS root SSL cert will be used to connect.
+* `POSTGRES_NUM_CONNECTIONS` (Optional): Number of clients per pool - defaults to 10.
+
+### Get PostgreSQL Pool
+
+```js
+const { postgres } = require('@imin/app-utils');
+
+(async () => {
+  // If POSTGRES_* environment variables are set, no config is needed here:
+  const pgPool = await postgres.pool();
+  // Otherwise:
+  const pgPool = await postgres.pool({
+    user: '..',
+    password: '..',
+    host: '..',
+    database: '..',
+    appName: '..',
+    isRds: true,
+  });
+  // Then, use the pool:
+  await pgPool.query("INSERT INTO my_emotions (mood, reason) VALUES ('happy', 'using @imin/app-utils')")
+})();
+```
+
+Also, see: [node-postgres' Pooling guide](https://node-postgres.com/features/pooling).
+
+### PostgreSQL Migrations (with db-migrate)
+
+You can also set up migrations using [db-migrate](https://db-migrate.readthedocs.io/en/latest/) - via `@imin/app-utils`. Like so:
 
 ```js
 const { syncDbMigrations } = require('@imin/app-utils');
@@ -44,14 +81,7 @@ const { syncDbMigrations } = require('@imin/app-utils');
 })();
 ```
 
-**ENV VARS**:
-
-* `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`: (REQUIRED) PostgreSQL connection details.
-* `POSTGRES_APP_NAME` (REQUIRED): Name of the app (e.g. `places`). This will be recorded in the connection, which is helpful for SQL debugging.
-* `POSTGRES_IS_RDS` (Optional - RECOMMENDED if using RDS): Set this to `true` if the DB is hosted in RDS. If true, the RDS root SSL cert will be used to connect.
-* `POSTGRES_NUM_CONNECTIONS` (Optional): Number of clients per pool - defaults to 10.
-
-### How to: Create Migration
+#### How to: Create Migration
 
 The above explains how you ensure that your app runs migrations when it starts. But how do you actually create migrations in your app:
 
@@ -64,7 +94,7 @@ The above explains how you ensure that your app runs migrations when it starts. 
 
   Note that the DATABASE_URL doesn't actually matter for this command.
 
-### Sync migrations CLI
+#### Sync migrations CLI
 
 @imin/app-utils provides 2 scripts for quickly testing migrations:
 
