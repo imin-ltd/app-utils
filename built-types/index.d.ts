@@ -1,4 +1,5 @@
 import { logger } from "./logger";
-import { syncDbMigrations } from "./syncDbMigrations";
+import { kongSecretMiddleware } from "./kongSecretMiddleware";
 import postgres = require("./postgres");
-export { logger, syncDbMigrations, postgres };
+import { syncDbMigrations } from "./syncDbMigrations";
+export { logger, kongSecretMiddleware, postgres, syncDbMigrations };
