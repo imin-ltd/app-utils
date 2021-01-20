@@ -35,6 +35,7 @@
     "node": "14.15.0"
   },
   "dependencies": {
+    "@imin/speck": "github:imin-ltd/speck#semver:0.3.0",
     "circular-json": "^0.5.9",
     "db-migrate": "^0.11.12",
     "db-migrate-pg": "^1.2.2",

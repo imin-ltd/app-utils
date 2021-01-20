@@ -129,3 +129,26 @@ The above explains how you ensure that your app runs migrations when it starts. 
   ```
 
 **NOTE: These scripts get PostgreSQL config from `.env` in your project**
+
+## Kong Secret Middleware
+
+If using Kong as API Gateway, you'll want to ensure that any requests to your app are only ever directly coming through Kong. The current solution is an API key in header `X-Kong-Secret`. If this matches the expected value, the request is considered to have come from Kong.
+
+In Kong, `X-Kong-Secret` can be set using the `request-transformer` plugin.
+
+**ENV VARS**:
+
+* `KONG_SECRET` (REQUIRED): Expected value for `X-Kong-Secret`. Use a large cryptographically secure random string.
+* `KONG_IS_DISABLED` (Optional): If `true`, Kong secret auth will be disabled.
+
+Using the Kong Secret Middleware:
+
+```js
+const express = require('express');
+const { kongSecretMiddleware } = require('@imin/app-utils');
+
+const app = express();
+app.use(kongSecretMiddleware());
+```
+
+If a request does not have the correct Kong Secret, the app will respond with an HTTP 401 and body `{ "error": "Unauthorized" }`.

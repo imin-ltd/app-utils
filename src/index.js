@@ -1,9 +1,11 @@
 const { logger } = require('./logger');
-const { syncDbMigrations } = require('./syncDbMigrations');
+const { kongSecretMiddleware } = require('./kongSecretMiddleware');
 const postgres = require('./postgres');
+const { syncDbMigrations } = require('./syncDbMigrations');
 
 module.exports = {
   logger,
-  syncDbMigrations,
+  kongSecretMiddleware,
   postgres,
+  syncDbMigrations,
 };
