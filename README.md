@@ -138,7 +138,7 @@ In Kong, `X-Kong-Secret` can be set using the `request-transformer` plugin.
 
 **ENV VARS**:
 
-* `KONG_SECRET` (REQUIRED): Expected value for `X-Kong-Secret`. Use a large cryptographically secure random string.
+* `KONG_SECRET` (REQUIRED): Expected value for `X-Kong-Secret`. Use a large cryptographically secure random string e.g. `crypto.randomBytes(32).toString('hex')`.
 * `KONG_IS_DISABLED` (Optional): If `true`, Kong secret auth will be disabled.
 
 Using the Kong Secret Middleware:
