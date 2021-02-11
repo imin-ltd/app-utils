@@ -2,7 +2,9 @@
 
 Core functionality for imin apps.
 
-## Logger
+Each of the below sub-headings describes a feature. You don't have to use all the features, you can just pick and choose. They are independent of each other.
+
+## Feature: Logger
 
 app-utils defines a (winston) logger when it is used. This logger can be used in your app with:
 
@@ -32,7 +34,7 @@ The logger will make sure to structure the Error object correctly, so that it's 
 
 If the error is an **Axios error**, we have more special handling still! Axios errors are famously large and contain lots and lots of generally irrelevant information. So if you include an axios error in the `error` field, logger will only include key details about the HTTP request and response.
 
-## PostgreSQL
+## Feature: PostgreSQL
 
 You can use `@imin/app-utils` to connect with a PostgreSQL database. In order to do this, it is advised to set up environment variables for PostgreSQL connection details (detailed below), though in some cases, connection details can be provided programmatically.
 
@@ -130,7 +132,7 @@ The above explains how you ensure that your app runs migrations when it starts. 
 
 **NOTE: These scripts get PostgreSQL config from `.env` in your project**
 
-## Kong Secret Middleware
+## Feature: Kong Secret Middleware
 
 If using Kong as API Gateway, you'll want to ensure that any requests to your app are only ever directly coming through Kong. The current solution is an API key in header `X-Kong-Secret`. If this matches the expected value, the request is considered to have come from Kong.
 
@@ -152,3 +154,26 @@ app.use(kongSecretMiddleware());
 ```
 
 If a request does not have the correct Kong Secret, the app will respond with an HTTP 401 and body `{ "error": "Unauthorized" }`.
+
+## Feature: Use private Git module in Heroku app
+
+In short, if you want to use a private GitHub repo (e.g. https://github.com/imin-ltd/shared-data-types) as an NPM dependency, you'll need this feature.
+
+For full explanation, see: https://imin-dev.atlassian.net/wiki/spaces/PD/pages/1053065217/Heroku+Access+to+GitHub+SSH.
+
+**ENV VARS**:
+
+* `GIT_SSH_KEY` (REQUIRED except when running locally): Private SSH key for Git. For more info, see https://imin-dev.atlassian.net/wiki/spaces/PD/pages/1053065217/Heroku+Access+to+GitHub+SSH#The-App.
+
+You'll need to add, to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "heroku-prebuild": "npx heroku-prebuild-set-git-ssh-key",
+    "heroku-cleanup": "npx heroku-cleanup-remove-git-ssh-key",
+    // ...
+  },
+  // ...
+}
+```
