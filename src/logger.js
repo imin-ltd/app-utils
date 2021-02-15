@@ -1,6 +1,7 @@
 const winston = require('winston');
 const CircularJSON = require('circular-json');
 const _ = require('lodash');
+const util = require('util');
 
 /**
  * @typedef {import('axios').AxiosError} AxiosError
@@ -80,6 +81,35 @@ const logger = winston.createLogger({
     silly: 5,
   },
   format: winston.format.printf((info) => {
+    // Print dev-friendly message in development mode.
+    // As an example, for `logger.error('Something bad', { error, processId })`,
+    // this looks like:
+    //
+    // ```
+    // [ERROR] Something bad
+    //
+    // Error: bad thing happened at
+    // {stack trace}
+    //
+    // processId: 123
+    // ```
+    if (process.env.NODE_ENV === 'development') {
+      const { error, level, message, ...rest } = info;
+      let result = `[${level.toUpperCase()}] ${message}`;
+      if (error) {
+        result += `\n\n${util.inspect(error)}`;
+      }
+      const restEntries = Object.entries(rest);
+      if (restEntries.length > 0) {
+        result += '\n';
+      }
+      for (const [key, value] of Object.entries(rest)) {
+        result += `\n${key}: ${value}`;
+      }
+      return result;
+    }
+    // Otherwise, print log platform-friendly messages.
+    // These are in a consistent JSON format so that they can be searched effectively.
     const { error, ...rest } = info;
     if (error !== undefined) {
       const loggableError = errorToLoggableObject(error);
