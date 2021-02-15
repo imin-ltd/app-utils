@@ -81,18 +81,19 @@ const logger = winston.createLogger({
     silly: 5,
   },
   format: winston.format.printf((info) => {
-    // Print dev-friendly message in development mode.
-    // As an example, for `logger.error('Something bad', { error, processId })`,
-    // this looks like:
-    //
-    // ```
-    // [ERROR] Something bad
-    //
-    // Error: bad thing happened at
-    // {stack trace}
-    //
-    // processId: 123
-    // ```
+    /* Print dev-friendly message in development mode.
+
+    As an example, for `logger.error('Something bad', { error, processId })`,
+    this looks like:
+
+    ```
+    [ERROR] Something bad
+
+    Error: bad thing happened at
+    {stack trace}
+
+    processId: 123
+    ``` */
     if (process.env.NODE_ENV === 'development') {
       const { error, level, message, ...rest } = info;
       let result = `[${level.toUpperCase()}] ${message}`;
