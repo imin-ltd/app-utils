@@ -6,7 +6,9 @@
   "types": "built-types/index.d.ts",
   "bin": {
     "db-migrate-up": "./src/cli/db-migrate-up.js",
-    "db-migrate-down": "./src/cli/db-migrate-down.js"
+    "db-migrate-down": "./src/cli/db-migrate-down.js",
+    "heroku-prebuild-set-git-ssh-key": "./src/cli/herokuPrebuildSetGitSshKey.sh",
+    "heroku-cleanup-remove-git-ssh-key": "./src/cli/herokuCleanupRemoveGitSshKey.sh"
   },
   "scripts": {
     "build": "tsc",
