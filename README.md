@@ -16,6 +16,25 @@ By default, its log level is set to `info` (i.e. `debug` messages will not be lo
 
 * **Setting env var: `LOG_LEVEL`**: Available values: `debug`, `info`, `warn`, `error`.
 
+### Dev mode
+
+In dev mode (`NODE_ENV=development`), the logger prints more readable logs like:
+
+```
+[ERROR] Something bad
+
+Error: bad thing happened at
+{stack trace}
+
+processId: 123
+```
+
+rather than the JSON logs which are printed in production dev modes.
+
+### Production mode
+
+In production mode (where `NODE_ENV` is not set to `development`), the logs are outputted as JSON, so that they can be easily processed by log analytics software.
+
 ### Errors
 
 In the object that you can pass to log calls, there's a special field: `error`. If there's a JS Error that you want to log, make sure to include it in the error field, e.g.:
