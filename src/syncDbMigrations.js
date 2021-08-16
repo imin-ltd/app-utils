@@ -11,15 +11,24 @@ const { port } = require('./utils/port');
  */
 
 /**
+ * @typedef {{
+ *   'migrations-dir': string,
+ *   [k: string]: any,
+ * }} DbMigrateCmdOptions
+ *   See: https://db-migrate.readthedocs.io/en/latest/API/programable/#:~:text=cmdoptions
+ */
+
+/**
  * @param {object} [options]
  * @param {PostgresConnectionDetails} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_APP_NAME`.
  * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
+ * @param {DbMigrateCmdOptions} [options.dbMigrateCmdOptions]
  */
 async function syncDbMigrations(options) {
   const doStartDummyExpressServer = options?.doStartDummyExpressServer ?? true;
   logger.info('syncDbMigrations() - syncing..');
-  const dbMigrate = await getDbMigrateInstance(options?.postgresConnection);
+  const dbMigrate = await getDbMigrateInstance(options?.postgresConnection, options?.dbMigrateCmdOptions);
   const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
   if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
   await dbMigrate.up();
@@ -28,9 +37,11 @@ async function syncDbMigrations(options) {
 
 /**
  * @param {PostgresConnectionDetails} [maybePostgresConnection] 
+ * @param {{ 'migrations-dir': string, [k: string]: any }} [maybeDbMigrateCmdOptions]
  */
-async function getDbMigrateInstance(maybePostgresConnection) {
-  return DBMigrate.getInstance(true, {
+async function getDbMigrateInstance(maybePostgresConnection, maybeDbMigrateCmdOptions) {
+  /** @type {any} */
+  const dbMigrateOptions = {
     config: {
       defaultEnv: 'postgres',
       postgres: {
@@ -40,7 +51,11 @@ async function getDbMigrateInstance(maybePostgresConnection) {
         ...(await getPgConfig(maybePostgresConnection)),
       },
     },
-  });
+  };
+  if (maybeDbMigrateCmdOptions) {
+    dbMigrateOptions.cmdOptions = maybeDbMigrateCmdOptions;
+  }
+  return DBMigrate.getInstance(true, dbMigrateOptions);
 }
 
 /**
