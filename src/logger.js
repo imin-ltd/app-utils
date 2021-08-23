@@ -30,7 +30,7 @@ function axiosErrorConfigToLoggableObject(error) {
   };
   if (_.isString(error.config.data)) {
     // this can be ridiculously long so truncate it
-    returnError.axiosConfig.data = truncateString(64, error.config.data);
+    returnError.axiosConfig.data = truncateString(256, error.config.data);
   }
   return returnError;
 }
@@ -40,6 +40,12 @@ function axiosErrorConfigToLoggableObject(error) {
  */
 function errorToLoggableObject(error) {
   const returnError = { ...error };
+  /* Without this, axios errors contain very limited information, as they have a .toJSON() function, which outputs
+  just things like error.stack and misses things like error.response.data. CircularJSON, which is our formatter for
+  logs, seems to use this `toJSON` function if it's there */
+  if (typeof returnError.toJSON === 'function') {
+    delete returnError.toJSON;
+  }
   if (error instanceof Error) {
     // JS errors lose these attributes when converted to objects (lord knows why)
     returnError.name = error.name;
