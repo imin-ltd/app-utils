@@ -32,7 +32,7 @@
     "typescript": "^4.1.3"
   },
   "engines": {
-    "node": "14.15.0"
+    "node": ">=14.15.0"
   },
   "dependencies": {
     "@imin/speck": "github:imin-ltd/speck#semver:0.3.0",
