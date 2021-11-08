@@ -171,3 +171,17 @@ app.use(kongSecretMiddleware());
 ```
 
 If a request does not have the correct Kong Secret, the app will respond with an HTTP 401 and body `{ "error": "Unauthorized" }`.
+
+## Heroku Utils
+
+### herokuUtils.getHerokuReleaseInfo(..)
+
+**This only works for Heroku apps which have [Dyno Metadata](https://devcenter.heroku.com/articles/dyno-metadata) enabled**
+
+Example usage:
+
+```js
+> const { herokuUtils: { getHerokuReleaseInfo } } = require('@imin/app-utils');
+> getHerokuReleaseInfo();
+{ herokuReleaseVersion: 'v925', herokuSlugCommit: 'bec18bdb698457c8a8e5dbf2828bdeeac4918166' }
+```
