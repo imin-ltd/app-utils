@@ -3,6 +3,7 @@ const { kongSecretMiddleware } = require('./kongSecretMiddleware');
 const postgres = require('./postgres');
 const { syncDbMigrations } = require('./syncDbMigrations');
 const { validateReq, validateReqQuery } = require('./expressUtils');
+const { getHerokuReleaseInfo } = require('./herokuUtils');
 
 module.exports = {
   logger,
@@ -12,5 +13,8 @@ module.exports = {
   expressUtils: {
     validateReq,
     validateReqQuery,
+  },
+  herokuUtils: {
+    getHerokuReleaseInfo,
   },
 };
