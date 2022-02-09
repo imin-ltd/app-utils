@@ -20,7 +20,7 @@
  *     const { params, query } = validationResult;
  *     ```
  */
-export function validateReq<TParams extends object, TQuery extends object>(routeName: string, paramsSpeck: import("@imin/speck/lib/types").Speck<TParams, TParams>, querySpeck: import("@imin/speck/lib/types").Speck<TQuery, TQuery>, req: import('express').Request, res: import('express').Response): false | {
+export function validateReq<TParams extends object, TQuery extends object>(routeName: string, paramsSpeck: s.Speck<TParams, TParams>, querySpeck: s.Speck<TQuery, TQuery>, req: import('express').Request, res: import('express').Response): false | {
     params: TParams;
     query: TQuery;
 };
@@ -38,4 +38,5 @@ export function validateReq<TParams extends object, TQuery extends object>(route
  *   * OR, if validation failed, just `false`. At this point, the API user has already been notified,
  *     so all you need to do is return.
  */
-export function validateReqQuery<TQuery extends object>(routeName: string, querySpeck: import("@imin/speck/lib/types").Speck<TQuery, TQuery>, req: import('express').Request, res: import('express').Response): false | TQuery;
+export function validateReqQuery<TQuery extends object>(routeName: string, querySpeck: s.Speck<TQuery, TQuery>, req: import('express').Request, res: import('express').Response): false | TQuery;
+import s = require("@imin/speck");
