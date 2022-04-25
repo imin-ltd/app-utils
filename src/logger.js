@@ -52,6 +52,8 @@ function errorToLoggableObject(error) {
     // state that doesn't need to be logged. We generally just want the URL and method
     delete returnError.request;
     delete returnError.config;
+    // axios errors include a toJSON() function, which reduces the amount of information that they expose
+    delete returnError.toJSON;
     returnError.isAxiosRequestError = true;
     returnError.axiosConfig = axiosErrorConfigToLoggableObject(error);
   }
@@ -61,6 +63,8 @@ function errorToLoggableObject(error) {
     // state that doesn't need to be logged. We generally just want the URL and method
     delete returnError.response;
     delete returnError.config;
+    // axios errors include a toJSON() function, which reduces the amount of information that they expose
+    delete returnError.toJSON;
     returnError.isAxiosResponseError = true;
     returnError.axiosConfig = axiosErrorConfigToLoggableObject(error);
     returnError.axiosResponse = {
