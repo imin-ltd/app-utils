@@ -106,11 +106,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
             price?: number | null | undefined;
-            priceCurrency?: "GBP" | null | undefined; /**
-             * Use this to specify a lens that should not actually be used
-             *
-             * @type {import('ramda').Lens<any, any>}
-             */
+            priceCurrency?: "GBP" | null | undefined;
             ageRange?: ({
                 type: "QuantitativeValue";
             } & {
@@ -1777,11 +1773,7 @@ export type TOpportunity = ({
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
             price?: number | null | undefined;
-            priceCurrency?: "GBP" | null | undefined; /**
-             * Use this to specify a lens that should not actually be used
-             *
-             * @type {import('ramda').Lens<any, any>}
-             */
+            priceCurrency?: "GBP" | null | undefined;
             ageRange?: ({
                 type: "QuantitativeValue";
             } & {
@@ -2967,7 +2959,7 @@ export type PlaceType = {
     name?: string | null | undefined;
     id?: string | null | undefined;
     identifier?: string | number | null | undefined;
-    url?: string | null | undefined;
+    url?: string | null | undefined; /** @type {import('ramda').Lens<TOpportunity, number> } */
     telephone?: string | null | undefined;
     'beta:formattedDescription'?: string | null | undefined;
 };
@@ -3210,11 +3202,11 @@ export namespace Lenses {
     const providerId: import('ramda').Lens<TOpportunity, string>;
     const name: import('ramda').Lens<TOpportunity, string>;
     const place: import('ramda').Lens<TOpportunity, PlaceType>;
+    const facilityUse: import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>;
     const offers: import('ramda').Lens<TOpportunity, OfferType[]>;
     const aggregateOffer: R.Lens<TOpportunity, any>;
     const remainingCapacity: import('ramda').Lens<TOpportunity, number>;
     const maxCapacity: import('ramda').Lens<TOpportunity, number>;
-    const facilityUse: import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>;
     namespace util {
         const throwErrorIfUsed: import('ramda').Lens<any, any>;
     }
