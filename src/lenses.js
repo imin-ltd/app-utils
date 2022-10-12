@@ -3,7 +3,8 @@ const R = require('ramda');
 /**
  * @typedef {import('@imin/shared-data-types/src/search/SearchIsBookingRequestFacilityUseSlot').SearchIsBookingRequestFacilityUseSlotType} SearchIsBookingRequestFacilityUseSlotType
  * @typedef {import('@imin/shared-data-types/src/booking/BsBookableScheduledSession').BsBookableScheduledSessionType} BsBookableScheduledSessionType
- * @typedef {SearchIsBookingRequestFacilityUseSlotType|BsBookableScheduledSessionType} TOpportunity
+ * @typedef {import('@imin/shared-data-types/src/booking/GetSlotByIdResponse').GetSlotByIdResponseType} GetSlotByIdResponseType
+ * @typedef {SearchIsBookingRequestFacilityUseSlotType|BsBookableScheduledSessionType | GetSlotByIdResponseType} TOpportunity
  *
  * @typedef {import('@imin/shared-data-types/src/booking/BsBookableScheduledSession').LocationSummaryLocationType} PlaceType // even though this is from the ScS, the FacilityUsePlace is exactly the same model
  * @typedef {import('@imin/shared-data-types/src/modellingSpec/common').OrganizerType} Organizer
