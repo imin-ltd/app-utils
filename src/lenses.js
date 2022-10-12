@@ -86,6 +86,10 @@ const Lenses = {
     scs: R.lensPath(['superEvent', 'superEvent', 'imin:locationSummary', '0']),
     slot: createSlotLensForFacilityUseProperty(['location']),
   }),
+  /** @type {import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>} */
+  facilityUse: opportunityTypeLens({
+    slot: createSlotLensForFacilityUseProperty([]),
+  }),
 
   /** @type {import('ramda').Lens<TOpportunity, OfferType[]> } */
   offers: opportunityTypeLens({
@@ -105,10 +109,6 @@ const Lenses = {
   maxCapacity: opportunityTypeLens({
     scs: R.lensPath(['maximumAttendeeCapacity']),
     slot: R.lensPath(['maximumUses']),
-  }),
-  /** @type {import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>} */
-  facilityUse: opportunityTypeLens({
-    slot: R.lensPath([]),
   }),
 
   util: {
