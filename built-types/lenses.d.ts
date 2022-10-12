@@ -2,6 +2,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
     type: "Slot";
     id: string;
     identifier: string;
+    startDate: string;
     remainingUses: number;
     maximumUses: number;
     facilityUse: {
@@ -57,7 +58,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
                 'imin:fullAddress'?: string | null | undefined;
             }) | null | undefined;
             telephone?: string | null | undefined;
-            email?: string | null | undefined;
+            email?: string | null | undefined; /** @type {TOpportunity} */
             logo?: ({
                 type: "ImageObject";
             } & {
@@ -88,6 +89,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
+            /** @type {import('ramda').Lens<TOpportunity, string> } */
             availableChannel?: string[] | null | undefined;
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
@@ -104,7 +106,11 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
             price?: number | null | undefined;
-            priceCurrency?: "GBP" | null | undefined;
+            priceCurrency?: "GBP" | null | undefined; /**
+             * Use this to specify a lens that should not actually be used
+             *
+             * @type {import('ramda').Lens<any, any>}
+             */
             ageRange?: ({
                 type: "QuantitativeValue";
             } & {
@@ -228,7 +234,6 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             offerId: string;
         }> | null | undefined;
     }) | null | undefined;
-    startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     duration?: string | null | undefined;
     'imin:checkoutUrlTemplate'?: string | null | undefined;
@@ -236,6 +241,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
     type: "Slot";
     id: string;
     identifier: string;
+    startDate: string;
     remainingUses: number;
     maximumUses: number;
     facilityUse: {
@@ -624,7 +630,6 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             offerId: string;
         }> | null | undefined;
     }) | null | undefined;
-    startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     duration?: string | null | undefined;
     'imin:checkoutUrlTemplate'?: string | null | undefined;
@@ -1027,10 +1032,11 @@ export type BsBookableScheduledSessionType = {
     duration?: string | null | undefined;
     maximumVirtualAttendeeCapacity?: number | null | undefined;
 };
-export type TOpportunity = ({
+export type GetSlotByIdResponseType = ({
     type: "Slot";
     id: string;
     identifier: string;
+    startDate: string;
     remainingUses: number;
     maximumUses: number;
     facilityUse: {
@@ -1070,7 +1076,7 @@ export type TOpportunity = ({
         provider: {
             type: "Organization";
         } & {
-            description?: string | null | undefined;
+            description?: string | null | undefined; /** @type {SearchIsBookingRequestFacilityUseSlotType} */
             name?: string | null | undefined;
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
@@ -1117,7 +1123,7 @@ export type TOpportunity = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
-            availableChannel?: string[] | null | undefined;
+            availableChannel?: string[] | null | undefined; /** @type {import('ramda').Lens<TOpportunity, string> } */
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
             allowCustomerCancellationFullRefund?: boolean | null | undefined;
@@ -1257,14 +1263,17 @@ export type TOpportunity = ({
             offerId: string;
         }> | null | undefined;
     }) | null | undefined;
-    startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     duration?: string | null | undefined;
     'imin:checkoutUrlTemplate'?: string | null | undefined;
+} & {
+    _stripeConnectedAccountId?: string | null | undefined;
+    _gitCommit?: string | null | undefined;
 }) | ({
     type: "Slot";
     id: string;
     identifier: string;
+    startDate: string;
     remainingUses: number;
     maximumUses: number;
     facilityUse: {
@@ -1653,11 +1662,1285 @@ export type TOpportunity = ({
             offerId: string;
         }> | null | undefined;
     }) | null | undefined;
-    startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     duration?: string | null | undefined;
     'imin:checkoutUrlTemplate'?: string | null | undefined;
-}) | import("@imin/shared-data-types/src/booking/BsBookableScheduledSession").BsBookableScheduledSessionType;
+} & {
+    _stripeConnectedAccountId?: string | null | undefined;
+    _gitCommit?: string | null | undefined;
+});
+export type TOpportunity = ({
+    type: "Slot";
+    id: string;
+    identifier: string;
+    startDate: string;
+    remainingUses: number;
+    maximumUses: number;
+    facilityUse: {
+        name: string;
+        type: "FacilityUse";
+        id: string;
+        identifier: string;
+        location: {
+            type: "Place";
+            address: {
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            };
+            geo: {
+                type: "GeoCoordinates";
+            } & {
+                latitude?: number | null | undefined;
+                longitude?: number | null | undefined;
+            };
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            telephone?: string | null | undefined;
+            'beta:formattedDescription'?: string | null | undefined;
+        };
+        _rpdeId: string;
+        _providerId: string;
+        provider: {
+            type: "Organization";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            email?: string | null | undefined; /** @type {TOpportunity} */
+            logo?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            }) | null | undefined;
+            sameAs?: string[] | null | undefined;
+            isOpenBookingAllowed?: boolean | null | undefined;
+        };
+    } & {
+        '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        '@context'?: string[] | null | undefined;
+        offers?: (({
+            type: "Offer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            /** @type {import('ramda').Lens<TOpportunity, string> } */
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }) | ({
+            type: "beta:IndicativeOffer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined; /**
+             * Use this to specify a lens that should not actually be used
+             *
+             * @type {import('ramda').Lens<any, any>}
+             */
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }))[] | null | undefined;
+        activity?: ({
+            type: "Concept";
+        } & {
+            id?: string | null | undefined;
+            inScheme?: string | null | undefined;
+            prefLabel?: string | null | undefined;
+        })[] | null | undefined;
+        'imin:aggregateOffer'?: ({
+            type: "imin:AggregateOffer";
+        } & {
+            publicAdult?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            publicJunior?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            '_imin:entitlementOffersDict'?: Record<string, {
+                price: number;
+                offerId: string;
+            }> | null | undefined;
+        }) | null | undefined;
+        image?: ({
+            type: "ImageObject";
+        } & {
+            url?: string | null | undefined;
+        })[] | null | undefined;
+        category?: string[] | null | undefined;
+        attendeeInstructions?: string | null | undefined;
+    };
+} & {
+    offers?: ({
+        type: "Offer";
+    } & {
+        description?: string | null | undefined;
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | number | null | undefined;
+        price?: number | null | undefined;
+        priceCurrency?: "GBP" | null | undefined;
+        ageRange?: ({
+            type: "QuantitativeValue";
+        } & {
+            maxValue?: number | null | undefined;
+            minValue?: number | null | undefined;
+        }) | null | undefined;
+        acceptedPaymentMethod?: string[] | null | undefined;
+        latestCancellationBeforeStartDate?: string | null | undefined;
+        validFromBeforeStartDate?: string | null | undefined;
+        validThroughBeforeStartDate?: string | null | undefined;
+        availableChannel?: string[] | null | undefined;
+        prepayment?: string | null | undefined;
+        advanceBooking?: string | null | undefined;
+        allowCustomerCancellationFullRefund?: boolean | null | undefined;
+        openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+        openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        'imin:membershipRequired'?: boolean | null | undefined;
+    })[] | null | undefined;
+    'imin:aggregateOffer'?: ({
+        type: "imin:AggregateOffer";
+    } & {
+        publicAdult?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        publicJunior?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        '_imin:entitlementOffersDict'?: Record<string, {
+            price: number;
+            offerId: string;
+        }> | null | undefined;
+    }) | null | undefined;
+    endDate?: string | null | undefined;
+    duration?: string | null | undefined;
+    'imin:checkoutUrlTemplate'?: string | null | undefined;
+}) | ({
+    type: "Slot";
+    id: string;
+    identifier: string;
+    startDate: string;
+    remainingUses: number;
+    maximumUses: number;
+    facilityUse: {
+        type: "IndividualFacilityUse";
+        facilityUse: {
+            name: string;
+            type: "FacilityUse";
+            id: string;
+            identifier: string;
+            location: {
+                type: "Place";
+                address: {
+                    type: "PostalAddress";
+                } & {
+                    addressCountry?: "GB" | null | undefined;
+                    postalCode?: string | null | undefined;
+                    addressRegion?: string | null | undefined;
+                    addressLocality?: string | null | undefined;
+                    streetAddress?: string | null | undefined;
+                    'imin:fullAddress'?: string | null | undefined;
+                };
+                geo: {
+                    type: "GeoCoordinates";
+                } & {
+                    latitude?: number | null | undefined;
+                    longitude?: number | null | undefined;
+                };
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                url?: string | null | undefined;
+                telephone?: string | null | undefined;
+                'beta:formattedDescription'?: string | null | undefined;
+            };
+            _rpdeId: string;
+            _providerId: string;
+            provider: {
+                type: "Organization";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                url?: string | null | undefined;
+                address?: ({
+                    type: "PostalAddress";
+                } & {
+                    addressCountry?: "GB" | null | undefined;
+                    postalCode?: string | null | undefined;
+                    addressRegion?: string | null | undefined;
+                    addressLocality?: string | null | undefined;
+                    streetAddress?: string | null | undefined;
+                    'imin:fullAddress'?: string | null | undefined;
+                }) | null | undefined;
+                telephone?: string | null | undefined;
+                email?: string | null | undefined;
+                logo?: ({
+                    type: "ImageObject";
+                } & {
+                    url?: string | null | undefined;
+                }) | null | undefined;
+                sameAs?: string[] | null | undefined;
+                isOpenBookingAllowed?: boolean | null | undefined;
+            };
+        } & {
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            '@context'?: string[] | null | undefined;
+            offers?: (({
+                type: "Offer";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                ageRange?: ({
+                    type: "QuantitativeValue";
+                } & {
+                    maxValue?: number | null | undefined;
+                    minValue?: number | null | undefined;
+                }) | null | undefined;
+                acceptedPaymentMethod?: string[] | null | undefined;
+                latestCancellationBeforeStartDate?: string | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                availableChannel?: string[] | null | undefined;
+                prepayment?: string | null | undefined;
+                advanceBooking?: string | null | undefined;
+                allowCustomerCancellationFullRefund?: boolean | null | undefined;
+                openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+                openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+            }) | ({
+                type: "beta:IndicativeOffer";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                ageRange?: ({
+                    type: "QuantitativeValue";
+                } & {
+                    maxValue?: number | null | undefined;
+                    minValue?: number | null | undefined;
+                }) | null | undefined;
+                acceptedPaymentMethod?: string[] | null | undefined;
+                latestCancellationBeforeStartDate?: string | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                availableChannel?: string[] | null | undefined;
+                prepayment?: string | null | undefined;
+                advanceBooking?: string | null | undefined;
+                allowCustomerCancellationFullRefund?: boolean | null | undefined;
+                openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+                openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+            }))[] | null | undefined;
+            activity?: ({
+                type: "Concept";
+            } & {
+                id?: string | null | undefined;
+                inScheme?: string | null | undefined;
+                prefLabel?: string | null | undefined;
+            })[] | null | undefined;
+            'imin:aggregateOffer'?: ({
+                type: "imin:AggregateOffer";
+            } & {
+                publicAdult?: ({
+                    type: "AggregateOffer";
+                } & {
+                    id?: string | null | undefined;
+                    price?: number | null | undefined;
+                    priceCurrency?: "GBP" | null | undefined;
+                    validFromBeforeStartDate?: string | null | undefined;
+                    validThroughBeforeStartDate?: string | null | undefined;
+                    'imin:membershipRequired'?: boolean | null | undefined;
+                    '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+                }) | null | undefined;
+                publicJunior?: ({
+                    type: "AggregateOffer";
+                } & {
+                    id?: string | null | undefined;
+                    price?: number | null | undefined;
+                    priceCurrency?: "GBP" | null | undefined;
+                    validFromBeforeStartDate?: string | null | undefined;
+                    validThroughBeforeStartDate?: string | null | undefined;
+                    'imin:membershipRequired'?: boolean | null | undefined;
+                    '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+                }) | null | undefined;
+                '_imin:entitlementOffersDict'?: Record<string, {
+                    price: number;
+                    offerId: string;
+                }> | null | undefined;
+            }) | null | undefined;
+            image?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            })[] | null | undefined;
+            category?: string[] | null | undefined;
+            attendeeInstructions?: string | null | undefined;
+        };
+    } & {
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | null | undefined;
+        '@context'?: string[] | null | undefined;
+        offers?: (({
+            type: "Offer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }) | ({
+            type: "beta:IndicativeOffer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }))[] | null | undefined;
+        location?: ({
+            type: "Place";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            geo?: ({
+                type: "GeoCoordinates";
+            } & {
+                latitude?: number | null | undefined;
+                longitude?: number | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            'beta:formattedDescription'?: string | null | undefined;
+        }) | null | undefined;
+        activity?: ({
+            type: "Concept";
+        } & {
+            id?: string | null | undefined;
+            inScheme?: string | null | undefined;
+            prefLabel?: string | null | undefined;
+        })[] | null | undefined;
+        'imin:aggregateOffer'?: ({
+            type: "imin:AggregateOffer";
+        } & {
+            publicAdult?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            publicJunior?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            '_imin:entitlementOffersDict'?: Record<string, {
+                price: number;
+                offerId: string;
+            }> | null | undefined;
+        }) | null | undefined;
+        image?: ({
+            type: "ImageObject";
+        } & {
+            url?: string | null | undefined;
+        })[] | null | undefined;
+        category?: string[] | null | undefined;
+        provider?: ({
+            type: "Organization";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            email?: string | null | undefined;
+            logo?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            }) | null | undefined;
+            sameAs?: string[] | null | undefined;
+            isOpenBookingAllowed?: boolean | null | undefined;
+        }) | null | undefined;
+        attendeeInstructions?: string | null | undefined;
+    };
+} & {
+    offers?: ({
+        type: "Offer";
+    } & {
+        description?: string | null | undefined;
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | number | null | undefined;
+        price?: number | null | undefined;
+        priceCurrency?: "GBP" | null | undefined;
+        ageRange?: ({
+            type: "QuantitativeValue";
+        } & {
+            maxValue?: number | null | undefined;
+            minValue?: number | null | undefined;
+        }) | null | undefined;
+        acceptedPaymentMethod?: string[] | null | undefined;
+        latestCancellationBeforeStartDate?: string | null | undefined;
+        validFromBeforeStartDate?: string | null | undefined;
+        validThroughBeforeStartDate?: string | null | undefined;
+        availableChannel?: string[] | null | undefined;
+        prepayment?: string | null | undefined;
+        advanceBooking?: string | null | undefined;
+        allowCustomerCancellationFullRefund?: boolean | null | undefined;
+        openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+        openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        'imin:membershipRequired'?: boolean | null | undefined;
+    })[] | null | undefined;
+    'imin:aggregateOffer'?: ({
+        type: "imin:AggregateOffer";
+    } & {
+        publicAdult?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        publicJunior?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        '_imin:entitlementOffersDict'?: Record<string, {
+            price: number;
+            offerId: string;
+        }> | null | undefined;
+    }) | null | undefined;
+    endDate?: string | null | undefined;
+    duration?: string | null | undefined;
+    'imin:checkoutUrlTemplate'?: string | null | undefined;
+}) | import("@imin/shared-data-types/src/booking/BsBookableScheduledSession").BsBookableScheduledSessionType | ({
+    type: "Slot";
+    id: string;
+    identifier: string;
+    startDate: string;
+    remainingUses: number;
+    maximumUses: number;
+    facilityUse: {
+        name: string;
+        type: "FacilityUse";
+        id: string;
+        identifier: string;
+        location: {
+            type: "Place";
+            address: {
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            };
+            geo: {
+                type: "GeoCoordinates";
+            } & {
+                latitude?: number | null | undefined;
+                longitude?: number | null | undefined;
+            };
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            telephone?: string | null | undefined;
+            'beta:formattedDescription'?: string | null | undefined;
+        };
+        _rpdeId: string;
+        _providerId: string;
+        provider: {
+            type: "Organization";
+        } & {
+            description?: string | null | undefined; /** @type {SearchIsBookingRequestFacilityUseSlotType} */
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            email?: string | null | undefined;
+            logo?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            }) | null | undefined;
+            sameAs?: string[] | null | undefined;
+            isOpenBookingAllowed?: boolean | null | undefined;
+        };
+    } & {
+        '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        '@context'?: string[] | null | undefined;
+        offers?: (({
+            type: "Offer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined; /** @type {import('ramda').Lens<TOpportunity, string> } */
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }) | ({
+            type: "beta:IndicativeOffer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }))[] | null | undefined;
+        activity?: ({
+            type: "Concept";
+        } & {
+            id?: string | null | undefined;
+            inScheme?: string | null | undefined;
+            prefLabel?: string | null | undefined;
+        })[] | null | undefined;
+        'imin:aggregateOffer'?: ({
+            type: "imin:AggregateOffer";
+        } & {
+            publicAdult?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            publicJunior?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            '_imin:entitlementOffersDict'?: Record<string, {
+                price: number;
+                offerId: string;
+            }> | null | undefined;
+        }) | null | undefined;
+        image?: ({
+            type: "ImageObject";
+        } & {
+            url?: string | null | undefined;
+        })[] | null | undefined;
+        category?: string[] | null | undefined;
+        attendeeInstructions?: string | null | undefined;
+    };
+} & {
+    offers?: ({
+        type: "Offer";
+    } & {
+        description?: string | null | undefined;
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | number | null | undefined;
+        price?: number | null | undefined;
+        priceCurrency?: "GBP" | null | undefined;
+        ageRange?: ({
+            type: "QuantitativeValue";
+        } & {
+            maxValue?: number | null | undefined;
+            minValue?: number | null | undefined;
+        }) | null | undefined;
+        acceptedPaymentMethod?: string[] | null | undefined;
+        latestCancellationBeforeStartDate?: string | null | undefined;
+        validFromBeforeStartDate?: string | null | undefined;
+        validThroughBeforeStartDate?: string | null | undefined;
+        availableChannel?: string[] | null | undefined;
+        prepayment?: string | null | undefined;
+        advanceBooking?: string | null | undefined;
+        allowCustomerCancellationFullRefund?: boolean | null | undefined;
+        openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+        openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        'imin:membershipRequired'?: boolean | null | undefined;
+    })[] | null | undefined;
+    'imin:aggregateOffer'?: ({
+        type: "imin:AggregateOffer";
+    } & {
+        publicAdult?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        publicJunior?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        '_imin:entitlementOffersDict'?: Record<string, {
+            price: number;
+            offerId: string;
+        }> | null | undefined;
+    }) | null | undefined;
+    endDate?: string | null | undefined;
+    duration?: string | null | undefined;
+    'imin:checkoutUrlTemplate'?: string | null | undefined;
+} & {
+    _stripeConnectedAccountId?: string | null | undefined;
+    _gitCommit?: string | null | undefined;
+}) | ({
+    type: "Slot";
+    id: string;
+    identifier: string;
+    startDate: string;
+    remainingUses: number;
+    maximumUses: number;
+    facilityUse: {
+        type: "IndividualFacilityUse";
+        facilityUse: {
+            name: string;
+            type: "FacilityUse";
+            id: string;
+            identifier: string;
+            location: {
+                type: "Place";
+                address: {
+                    type: "PostalAddress";
+                } & {
+                    addressCountry?: "GB" | null | undefined;
+                    postalCode?: string | null | undefined;
+                    addressRegion?: string | null | undefined;
+                    addressLocality?: string | null | undefined;
+                    streetAddress?: string | null | undefined;
+                    'imin:fullAddress'?: string | null | undefined;
+                };
+                geo: {
+                    type: "GeoCoordinates";
+                } & {
+                    latitude?: number | null | undefined;
+                    longitude?: number | null | undefined;
+                };
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                url?: string | null | undefined;
+                telephone?: string | null | undefined;
+                'beta:formattedDescription'?: string | null | undefined;
+            };
+            _rpdeId: string;
+            _providerId: string;
+            provider: {
+                type: "Organization";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                url?: string | null | undefined;
+                address?: ({
+                    type: "PostalAddress";
+                } & {
+                    addressCountry?: "GB" | null | undefined;
+                    postalCode?: string | null | undefined;
+                    addressRegion?: string | null | undefined;
+                    addressLocality?: string | null | undefined;
+                    streetAddress?: string | null | undefined;
+                    'imin:fullAddress'?: string | null | undefined;
+                }) | null | undefined;
+                telephone?: string | null | undefined;
+                email?: string | null | undefined;
+                logo?: ({
+                    type: "ImageObject";
+                } & {
+                    url?: string | null | undefined;
+                }) | null | undefined;
+                sameAs?: string[] | null | undefined;
+                isOpenBookingAllowed?: boolean | null | undefined;
+            };
+        } & {
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            '@context'?: string[] | null | undefined;
+            offers?: (({
+                type: "Offer";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                ageRange?: ({
+                    type: "QuantitativeValue";
+                } & {
+                    maxValue?: number | null | undefined;
+                    minValue?: number | null | undefined;
+                }) | null | undefined;
+                acceptedPaymentMethod?: string[] | null | undefined;
+                latestCancellationBeforeStartDate?: string | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                availableChannel?: string[] | null | undefined;
+                prepayment?: string | null | undefined;
+                advanceBooking?: string | null | undefined;
+                allowCustomerCancellationFullRefund?: boolean | null | undefined;
+                openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+                openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+            }) | ({
+                type: "beta:IndicativeOffer";
+            } & {
+                description?: string | null | undefined;
+                name?: string | null | undefined;
+                id?: string | null | undefined;
+                identifier?: string | number | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                ageRange?: ({
+                    type: "QuantitativeValue";
+                } & {
+                    maxValue?: number | null | undefined;
+                    minValue?: number | null | undefined;
+                }) | null | undefined;
+                acceptedPaymentMethod?: string[] | null | undefined;
+                latestCancellationBeforeStartDate?: string | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                availableChannel?: string[] | null | undefined;
+                prepayment?: string | null | undefined;
+                advanceBooking?: string | null | undefined;
+                allowCustomerCancellationFullRefund?: boolean | null | undefined;
+                openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+                openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+            }))[] | null | undefined;
+            activity?: ({
+                type: "Concept";
+            } & {
+                id?: string | null | undefined;
+                inScheme?: string | null | undefined;
+                prefLabel?: string | null | undefined;
+            })[] | null | undefined;
+            'imin:aggregateOffer'?: ({
+                type: "imin:AggregateOffer";
+            } & {
+                publicAdult?: ({
+                    type: "AggregateOffer";
+                } & {
+                    id?: string | null | undefined;
+                    price?: number | null | undefined;
+                    priceCurrency?: "GBP" | null | undefined;
+                    validFromBeforeStartDate?: string | null | undefined;
+                    validThroughBeforeStartDate?: string | null | undefined;
+                    'imin:membershipRequired'?: boolean | null | undefined;
+                    '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+                }) | null | undefined;
+                publicJunior?: ({
+                    type: "AggregateOffer";
+                } & {
+                    id?: string | null | undefined;
+                    price?: number | null | undefined;
+                    priceCurrency?: "GBP" | null | undefined;
+                    validFromBeforeStartDate?: string | null | undefined;
+                    validThroughBeforeStartDate?: string | null | undefined;
+                    'imin:membershipRequired'?: boolean | null | undefined;
+                    '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+                }) | null | undefined;
+                '_imin:entitlementOffersDict'?: Record<string, {
+                    price: number;
+                    offerId: string;
+                }> | null | undefined;
+            }) | null | undefined;
+            image?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            })[] | null | undefined;
+            category?: string[] | null | undefined;
+            attendeeInstructions?: string | null | undefined;
+        };
+    } & {
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | null | undefined;
+        '@context'?: string[] | null | undefined;
+        offers?: (({
+            type: "Offer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }) | ({
+            type: "beta:IndicativeOffer";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            ageRange?: ({
+                type: "QuantitativeValue";
+            } & {
+                maxValue?: number | null | undefined;
+                minValue?: number | null | undefined;
+            }) | null | undefined;
+            acceptedPaymentMethod?: string[] | null | undefined;
+            latestCancellationBeforeStartDate?: string | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            availableChannel?: string[] | null | undefined;
+            prepayment?: string | null | undefined;
+            advanceBooking?: string | null | undefined;
+            allowCustomerCancellationFullRefund?: boolean | null | undefined;
+            openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+            openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+        }))[] | null | undefined;
+        location?: ({
+            type: "Place";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            geo?: ({
+                type: "GeoCoordinates";
+            } & {
+                latitude?: number | null | undefined;
+                longitude?: number | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            'beta:formattedDescription'?: string | null | undefined;
+        }) | null | undefined;
+        activity?: ({
+            type: "Concept";
+        } & {
+            id?: string | null | undefined;
+            inScheme?: string | null | undefined;
+            prefLabel?: string | null | undefined;
+        })[] | null | undefined;
+        'imin:aggregateOffer'?: ({
+            type: "imin:AggregateOffer";
+        } & {
+            publicAdult?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            publicJunior?: ({
+                type: "AggregateOffer";
+            } & {
+                id?: string | null | undefined;
+                price?: number | null | undefined;
+                priceCurrency?: "GBP" | null | undefined;
+                validFromBeforeStartDate?: string | null | undefined;
+                validThroughBeforeStartDate?: string | null | undefined;
+                'imin:membershipRequired'?: boolean | null | undefined;
+                '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+            }) | null | undefined;
+            '_imin:entitlementOffersDict'?: Record<string, {
+                price: number;
+                offerId: string;
+            }> | null | undefined;
+        }) | null | undefined;
+        image?: ({
+            type: "ImageObject";
+        } & {
+            url?: string | null | undefined;
+        })[] | null | undefined;
+        category?: string[] | null | undefined;
+        provider?: ({
+            type: "Organization";
+        } & {
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            id?: string | null | undefined;
+            identifier?: string | number | null | undefined;
+            url?: string | null | undefined;
+            address?: ({
+                type: "PostalAddress";
+            } & {
+                addressCountry?: "GB" | null | undefined;
+                postalCode?: string | null | undefined;
+                addressRegion?: string | null | undefined;
+                addressLocality?: string | null | undefined;
+                streetAddress?: string | null | undefined;
+                'imin:fullAddress'?: string | null | undefined;
+            }) | null | undefined;
+            telephone?: string | null | undefined;
+            email?: string | null | undefined;
+            logo?: ({
+                type: "ImageObject";
+            } & {
+                url?: string | null | undefined;
+            }) | null | undefined;
+            sameAs?: string[] | null | undefined;
+            isOpenBookingAllowed?: boolean | null | undefined;
+        }) | null | undefined;
+        attendeeInstructions?: string | null | undefined;
+    };
+} & {
+    offers?: ({
+        type: "Offer";
+    } & {
+        description?: string | null | undefined;
+        name?: string | null | undefined;
+        id?: string | null | undefined;
+        identifier?: string | number | null | undefined;
+        price?: number | null | undefined;
+        priceCurrency?: "GBP" | null | undefined;
+        ageRange?: ({
+            type: "QuantitativeValue";
+        } & {
+            maxValue?: number | null | undefined;
+            minValue?: number | null | undefined;
+        }) | null | undefined;
+        acceptedPaymentMethod?: string[] | null | undefined;
+        latestCancellationBeforeStartDate?: string | null | undefined;
+        validFromBeforeStartDate?: string | null | undefined;
+        validThroughBeforeStartDate?: string | null | undefined;
+        availableChannel?: string[] | null | undefined;
+        prepayment?: string | null | undefined;
+        advanceBooking?: string | null | undefined;
+        allowCustomerCancellationFullRefund?: boolean | null | undefined;
+        openBookingFlowRequirement?: "https://openactive.io/OpenBookingIntakeForm" | "https://openactive.io/OpenBookingAttendeeDetails" | "https://openactive.io/OpenBookingApproval" | "https://openactive.io/OpenBookingNegotiation" | "https://openactive.io/OpenBookingMessageExchange" | "oa:OpenBookingIntakeForm" | "oa:OpenBookingAttendeeDetails" | "oa:OpenBookingApproval" | "oa:OpenBookingNegotiation" | "oa:OpenBookingMessageExchange" | null | undefined;
+        openBookingInAdvance?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        openBookingPrepayment?: "https://openactive.io/Required" | "https://openactive.io/Optional" | "https://openactive.io/Unavailable" | "oa:Required" | "oa:Optional" | "oa:Unavailable" | null | undefined;
+        'imin:membershipRequired'?: boolean | null | undefined;
+    })[] | null | undefined;
+    'imin:aggregateOffer'?: ({
+        type: "imin:AggregateOffer";
+    } & {
+        publicAdult?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        publicJunior?: ({
+            type: "AggregateOffer";
+        } & {
+            id?: string | null | undefined;
+            price?: number | null | undefined;
+            priceCurrency?: "GBP" | null | undefined;
+            validFromBeforeStartDate?: string | null | undefined;
+            validThroughBeforeStartDate?: string | null | undefined;
+            'imin:membershipRequired'?: boolean | null | undefined;
+            '_imin:isPotentiallyBookable'?: boolean | null | undefined;
+        }) | null | undefined;
+        '_imin:entitlementOffersDict'?: Record<string, {
+            price: number;
+            offerId: string;
+        }> | null | undefined;
+    }) | null | undefined;
+    endDate?: string | null | undefined;
+    duration?: string | null | undefined;
+    'imin:checkoutUrlTemplate'?: string | null | undefined;
+} & {
+    _stripeConnectedAccountId?: string | null | undefined;
+    _gitCommit?: string | null | undefined;
+});
 /**
  * // even though this is from the ScS, the FacilityUsePlace is exactly the same model
  */
@@ -1927,7 +3210,7 @@ export namespace Lenses {
     const providerId: import('ramda').Lens<TOpportunity, string>;
     const name: import('ramda').Lens<TOpportunity, string>;
     const place: import('ramda').Lens<TOpportunity, PlaceType>;
-    const offers: import('ramda').Lens<TOpportunity, OfferType>;
+    const offers: import('ramda').Lens<TOpportunity, OfferType[]>;
     const aggregateOffer: R.Lens<TOpportunity, any>;
     const remainingCapacity: import('ramda').Lens<TOpportunity, number>;
     const maxCapacity: import('ramda').Lens<TOpportunity, number>;
