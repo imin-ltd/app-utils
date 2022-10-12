@@ -36,7 +36,7 @@
     "npm": "8.11.0"
   },
   "dependencies": {
-    "@imin/shared-data-types": "github:imin-ltd/shared-data-types#163bb3d",
+    "@imin/shared-data-types": "github:imin-ltd/shared-data-types#abbb952",
     "@imin/speck": "github:imin-ltd/speck#94b3c55",
     "@types/ramda": "^0.28.15",
     "circular-json": "^0.5.9",
