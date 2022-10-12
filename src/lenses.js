@@ -87,7 +87,7 @@ const Lenses = {
     slot: createSlotLensForFacilityUseProperty(['location']),
   }),
 
-  /** @type {import('ramda').Lens<TOpportunity, OfferType> } */
+  /** @type {import('ramda').Lens<TOpportunity, OfferType[]> } */
   offers: opportunityTypeLens({
     scs: R.lensPath(['superEvent', 'offers']),
     slot: R.lensProp('offers'),
