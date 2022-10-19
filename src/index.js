@@ -4,6 +4,7 @@ const postgres = require('./postgres');
 const { syncDbMigrations } = require('./syncDbMigrations');
 const { validateReq, validateReqQuery } = require('./expressUtils');
 const { getHerokuReleaseInfo } = require('./herokuUtils');
+const { Lenses } = require('./lenses');
 
 module.exports = {
   logger,
@@ -17,4 +18,5 @@ module.exports = {
   herokuUtils: {
     getHerokuReleaseInfo,
   },
+  Lenses,
 };
