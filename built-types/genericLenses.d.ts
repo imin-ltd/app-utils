@@ -99,9 +99,7 @@ import R = require("ramda");
  */
 declare function createSellerLens<TSeller, TOpportunity extends ScSLike<{
     organizer: TSeller;
-}> | SlotNoIfuLike<{
-    provider: TSeller;
-}> | SlotIfuLike<{
+}> | SlotLike<{
     provider: TSeller;
 }>>(): R.Lens<TOpportunity, TSeller>;
 export {};
