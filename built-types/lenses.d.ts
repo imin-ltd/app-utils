@@ -58,7 +58,7 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
                 'imin:fullAddress'?: string | null | undefined;
             }) | null | undefined;
             telephone?: string | null | undefined;
-            email?: string | null | undefined; /** @type {TOpportunity} */
+            email?: string | null | undefined;
             logo?: ({
                 type: "ImageObject";
             } & {
@@ -89,7 +89,6 @@ export type SearchIsBookingRequestFacilityUseSlotType = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
-            /** @type {import('ramda').Lens<TOpportunity, string> } */
             availableChannel?: string[] | null | undefined;
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
@@ -1072,7 +1071,7 @@ export type GetSlotByIdResponseType = ({
         provider: {
             type: "Organization";
         } & {
-            description?: string | null | undefined; /** @type {SearchIsBookingRequestFacilityUseSlotType} */
+            description?: string | null | undefined;
             name?: string | null | undefined;
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
@@ -1119,7 +1118,7 @@ export type GetSlotByIdResponseType = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
-            availableChannel?: string[] | null | undefined; /** @type {import('ramda').Lens<TOpportunity, string> } */
+            availableChannel?: string[] | null | undefined;
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
             allowCustomerCancellationFullRefund?: boolean | null | undefined;
@@ -1665,7 +1664,7 @@ export type GetSlotByIdResponseType = ({
     _stripeConnectedAccountId?: string | null | undefined;
     _gitCommit?: string | null | undefined;
 });
-export type TOpportunity = ({
+export type Opportunity = ({
     type: "Slot";
     id: string;
     identifier: string;
@@ -1725,7 +1724,7 @@ export type TOpportunity = ({
                 'imin:fullAddress'?: string | null | undefined;
             }) | null | undefined;
             telephone?: string | null | undefined;
-            email?: string | null | undefined; /** @type {TOpportunity} */
+            email?: string | null | undefined;
             logo?: ({
                 type: "ImageObject";
             } & {
@@ -1756,7 +1755,6 @@ export type TOpportunity = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
-            /** @type {import('ramda').Lens<TOpportunity, string> } */
             availableChannel?: string[] | null | undefined;
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
@@ -2340,7 +2338,7 @@ export type TOpportunity = ({
         provider: {
             type: "Organization";
         } & {
-            description?: string | null | undefined; /** @type {SearchIsBookingRequestFacilityUseSlotType} */
+            description?: string | null | undefined;
             name?: string | null | undefined;
             id?: string | null | undefined;
             identifier?: string | number | null | undefined;
@@ -2387,7 +2385,7 @@ export type TOpportunity = ({
             latestCancellationBeforeStartDate?: string | null | undefined;
             validFromBeforeStartDate?: string | null | undefined;
             validThroughBeforeStartDate?: string | null | undefined;
-            availableChannel?: string[] | null | undefined; /** @type {import('ramda').Lens<TOpportunity, string> } */
+            availableChannel?: string[] | null | undefined;
             prepayment?: string | null | undefined;
             advanceBooking?: string | null | undefined;
             allowCustomerCancellationFullRefund?: boolean | null | undefined;
@@ -2959,7 +2957,7 @@ export type PlaceType = {
     name?: string | null | undefined;
     id?: string | null | undefined;
     identifier?: string | number | null | undefined;
-    url?: string | null | undefined; /** @type {import('ramda').Lens<TOpportunity, number> } */
+    url?: string | null | undefined;
     telephone?: string | null | undefined;
     'beta:formattedDescription'?: string | null | undefined;
 };
@@ -3198,15 +3196,21 @@ export type SearchIsBookingRequestFacilityUseType = {
     attendeeInstructions?: string | null | undefined;
 };
 export namespace Lenses {
-    const seller: import('ramda').Lens<TOpportunity, Organizer>;
-    const providerId: import('ramda').Lens<TOpportunity, string>;
-    const name: import('ramda').Lens<TOpportunity, string>;
-    const place: import('ramda').Lens<TOpportunity, PlaceType>;
-    const facilityUse: import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>;
-    const offers: import('ramda').Lens<TOpportunity, OfferType[]>;
-    const aggregateOffer: R.Lens<TOpportunity, any>;
-    const remainingCapacity: import('ramda').Lens<TOpportunity, number>;
-    const maxCapacity: import('ramda').Lens<TOpportunity, number>;
+    const seller: R.Lens<import("./genericLenses").ScSLike<{
+        organizer: any;
+    }> | import("./genericLenses").SlotNoIfuLike<{
+        provider: any;
+    }> | import("./genericLenses").SlotIfuLike<{
+        provider: any;
+    }>, any>;
+    const providerId: import('ramda').Lens<Opportunity, string>;
+    const name: import('ramda').Lens<Opportunity, string>;
+    const place: import('ramda').Lens<Opportunity, PlaceType>;
+    const facilityUse: import('ramda').Lens<Opportunity, SearchIsBookingRequestFacilityUseType>;
+    const offers: import('ramda').Lens<Opportunity, OfferType[]>;
+    const aggregateOffer: R.Lens<any, any>;
+    const remainingCapacity: import('ramda').Lens<Opportunity, number>;
+    const maxCapacity: import('ramda').Lens<Opportunity, number>;
     namespace util {
         const throwErrorIfUsed: import('ramda').Lens<any, any>;
     }
