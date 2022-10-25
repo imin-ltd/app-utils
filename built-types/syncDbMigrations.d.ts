@@ -1,12 +1,4 @@
-export type PostgresConnectionDetails = {
-    user: string;
-    password: string;
-    host: string;
-    database: string;
-    appName: string;
-    numConnections?: number | null | undefined;
-    isRds?: boolean | null | undefined;
-};
+export type PostgresConnectionDetails = import('./postgres').PostgresConnectionDetails;
 /**
  * See: https://db-migrate.readthedocs.io/en/latest/API/programable/#:~:text=cmdoptions
  */
