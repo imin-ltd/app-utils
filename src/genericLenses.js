@@ -130,7 +130,7 @@ function opportunityTypeLens(lensByOpportunityType) {
  * ```
  *
  * @template TSeller
- * @template {ScSLike<{ organizer: TSeller }> | SlotLike<{ provider: TSeller }>} TOpportunity
+ * @template {ScSLike<{ organizer?: TSeller }> | SlotLike<{ provider?: TSeller }>} TOpportunity
  * @returns {import('ramda').Lens<TOpportunity, TSeller>}
  */
 function createSellerLens() {

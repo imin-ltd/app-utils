@@ -94,12 +94,12 @@ import R = require("ramda");
  * ```
  *
  * @template TSeller
- * @template {ScSLike<{ organizer: TSeller }> | SlotLike<{ provider: TSeller }>} TOpportunity
+ * @template {ScSLike<{ organizer?: TSeller }> | SlotLike<{ provider?: TSeller }>} TOpportunity
  * @returns {import('ramda').Lens<TOpportunity, TSeller>}
  */
 declare function createSellerLens<TSeller, TOpportunity extends ScSLike<{
-    organizer: TSeller;
+    organizer?: TSeller | undefined;
 }> | SlotLike<{
-    provider: TSeller;
+    provider?: TSeller | undefined;
 }>>(): R.Lens<TOpportunity, TSeller>;
 export {};
