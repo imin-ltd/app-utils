@@ -17,11 +17,12 @@ const R = require('ramda');
 
 /**
  * @template TEventSeriesFields
+ * @template TSessionSeriesFields
  * @typedef {{
  *   type: 'ScheduledSession',
  *   superEvent: {
  *     superEvent: TEventSeriesFields
- *   }
+ *   } & TSessionSeriesFields,
  * }} ScSLike
  */
 
@@ -75,7 +76,7 @@ function createSlotLensForFacilityUseProperty(propertyPath) {
 }
 
 /**
- * @template {ScSLike<any>} TScS
+ * @template {ScSLike<any, any>} TScS
  * @template {SlotLike<any>} TSlot
  * @param {{
  *  scs?: import('ramda').Lens<TScS, any>,
@@ -113,8 +114,83 @@ function opportunityTypeLens(lensByOpportunityType) {
 }
 
 /**
+ * @template TSeller
+ * @template {ScSLike<{ organizer?: TSeller }, any> | SlotLike<{ provider?: TSeller }>} TOpportunity
+ * @returns {import('ramda').Lens<TOpportunity, TSeller>}
+ */
+function createSellerLens() {
+  // > Type 'Lens<SlotLike<any> | ScSLike<any>, any>' is not assignable to type 'Lens<TOpportunity, TSeller>'
+  return /** @type {any} */(opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'superEvent', 'organizer']),
+    slot: createSlotLensForFacilityUseProperty(['provider']),
+  }));
+}
+
+/**
+ * @template {string | null | undefined} TName
+ * @template {ScSLike<{ name?: TName }, any> | SlotLike<{ name?: TName }>} TOpportunity
+ * @returns {import('ramda').Lens<TOpportunity, TName>}
+ */
+function createNameLens() {
+  return /** @type {any} */(opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'superEvent', 'name']),
+    slot: createSlotLensForFacilityUseProperty(['name']),
+  }));
+}
+
+/* It would be nice to have a generic createPlaceLens() that searches either EventSeries
+imin:locationSummary or SessionSeries location (for sessions). I believe this is relatively easy
+(but fiddly for existing use cases).
+
+The only reason we haven't done that here is that there is not yet a use case where a fully formed Place
+could be either in [EventSeries].imin:locationSummary or [SessionSeries].location */
+
+/**
+ * Lens for the Opportunity's Place. For ScheduledSessions, this searches imin:locationSummary.
+ * Therefore, this is the function to use when dealing with Opportunities that have come from imin
+ * Search.
+ *
+ * Pre-condition:
+ * - The EventSeries, if it has a location summary, only has one item which has
+ *   the same location as the ScheduledSession's SessionSeries.
+ *   I believe this is how the Search ScS by-id endpoint works.
+ *
+ * @template TPlace
+ * @template {ScSLike<{ 'imin:locationSummary'?: TPlace[] }, any> | SlotLike<{ location?: TPlace }>} TOpportunity
+ * @returns {import('ramda').Lens<TOpportunity, TPlace>}
+ */
+function createLocationSummaryLens() {
+  /* TODO a more sophisticated operation might be to get the imin:locationSummary item with the ID
+  that matches superEvent.location.id. This would then allow for an imin:locationSummary with
+  multiple items and thus allow us to remove our pre-condition */
+  return /** @type {any} */(opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'superEvent', 'imin:locationSummary', '0']),
+    slot: createSlotLensForFacilityUseProperty(['location']),
+  }));
+}
+
+/**
+ * Lens for the Opportunity's Place. For ScheduledSessions, this searches SessionSeries location.
+ * Therefore, this is the function to use when dealing with Opportunities that have come from an
+ * OpenActive Data Source.
+ *
+ * @template TPlace
+ * @template {ScSLike<any, { location?: TPlace }> | SlotLike<{ location?: TPlace }>} TOpportunity
+ * @returns {import('ramda').Lens<TOpportunity, TPlace>}
+ */
+function createLocationLens() {
+  /* TODO a more sophisticated operation might be to get the imin:locationSummary item with the ID
+  that matches superEvent.location.id. This would then allow for an imin:locationSummary with
+  multiple items and thus allow us to remove our pre-condition */
+  return /** @type {any} */(opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'location']),
+    slot: createSlotLensForFacilityUseProperty(['location']),
+  }));
+}
+
+/**
  * How to use in JSDoc (the `*\` is an intentional mistake to allow this to fit into a JSDoc. Correct it
- * in order to use it):
+ * in order to use it), on, as an example, `createSellerLens`:
  *
  * ```js
  * const sellerLens = /** @type {typeof createSellerLens<OrganizerType, OppType>} *\(createSellerLens)();
@@ -128,21 +204,12 @@ function opportunityTypeLens(lensByOpportunityType) {
  * ```ts
  * const sellerLens = createSellerLens<OrganizerType, OppType>();
  * ```
- *
- * @template TSeller
- * @template {ScSLike<{ organizer?: TSeller }> | SlotLike<{ provider?: TSeller }>} TOpportunity
- * @returns {import('ramda').Lens<TOpportunity, TSeller>}
  */
-function createSellerLens() {
-  // > Type 'Lens<SlotLike<any> | ScSLike<any>, any>' is not assignable to type 'Lens<TOpportunity, TSeller>'
-  return /** @type {any} */(opportunityTypeLens({
-    scs: R.lensPath(['superEvent', 'superEvent', 'organizer']),
-    slot: createSlotLensForFacilityUseProperty(['provider']),
-  }));
-}
-
 const genericLenses = {
   createSellerLens,
+  createNameLens,
+  createLocationSummaryLens,
+  createLocationLens,
 };
 
 module.exports = {

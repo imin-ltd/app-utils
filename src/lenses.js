@@ -7,7 +7,11 @@ const R = require('ramda');
 const {
   createSlotLensForFacilityUseProperty,
   opportunityTypeLens: genericOpportunityTypeLens,
-  genericLenses: { createSellerLens },
+  genericLenses: {
+    createSellerLens,
+    createNameLens,
+    createLocationSummaryLens
+  },
 } = require('./genericLenses');
 
 /**
@@ -32,16 +36,8 @@ const Lenses = {
     scs: R.lensProp('_provider'),
     slot: createSlotLensForFacilityUseProperty(['_providerId']),
   }),
-  /** @type {import('ramda').Lens<Opportunity, string> } */
-  name: opportunityTypeLens({
-    scs: R.lensPath(['superEvent', 'superEvent', 'name']),
-    slot: createSlotLensForFacilityUseProperty(['name']),
-  }),
-  /** @type {import('ramda').Lens<Opportunity, PlaceType> } */
-  place: opportunityTypeLens({
-    scs: R.lensPath(['superEvent', 'superEvent', 'imin:locationSummary', '0']),
-    slot: createSlotLensForFacilityUseProperty(['location']),
-  }),
+  name: /** @type {typeof createNameLens<string, Opportunity>} */(createNameLens)(),
+  place: /** @type {typeof createLocationSummaryLens<PlaceType, Opportunity>} */(createLocationSummaryLens)(),
   /** @type {import('ramda').Lens<Opportunity, SearchIsBookingRequestFacilityUseType>} */
   facilityUse: opportunityTypeLens({
     slot: createSlotLensForFacilityUseProperty([]),
