@@ -12,8 +12,8 @@ export type SearchIsBookingRequestFacilityUseType = import('@imin/shared-data-ty
 export namespace Lenses {
     const seller: R.Lens<Opportunity, import("@imin/shared-data-types/src/modellingSpec/common").OrganizerType>;
     const providerId: import('ramda').Lens<Opportunity, string>;
-    const name: import('ramda').Lens<Opportunity, string>;
-    const place: import('ramda').Lens<Opportunity, PlaceType>;
+    const name: R.Lens<Opportunity, string>;
+    const place: R.Lens<Opportunity, import("@imin/shared-data-types/src/booking/BsBookableScheduledSession").LocationSummaryLocationType>;
     const facilityUse: import('ramda').Lens<Opportunity, SearchIsBookingRequestFacilityUseType>;
     const offers: import('ramda').Lens<Opportunity, OfferType[]>;
     const aggregateOffer: R.Lens<import("@imin/shared-data-types/src/search/SearchIsBookingRequestFacilityUseSlot").SearchIsBookingRequestFacilityUseSlotType | import("@imin/shared-data-types/src/booking/BsBookableScheduledSession").BsBookableScheduledSessionType | import("@imin/shared-data-types/src/booking/GetSlotByIdResponse").GetSlotByIdResponseType, any>;
