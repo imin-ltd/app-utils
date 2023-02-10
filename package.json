@@ -33,7 +33,7 @@
   },
   "engines": {
     "node": ">=14.15.0",
-    "npm": "8.11.0"
+    "npm": ">=8.11.0"
   },
   "dependencies": {
     "@imin/shared-data-types": "github:imin-ltd/shared-data-types#abbb952",
