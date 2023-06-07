@@ -1,3 +1,4 @@
+const { genericLenses } = require('./genericLenses');
 const { logger } = require('./logger');
 const { kongSecretMiddleware } = require('./kongSecretMiddleware');
 const postgres = require('./postgres');
@@ -19,4 +20,5 @@ module.exports = {
     getHerokuReleaseInfo,
   },
   Lenses,
+  genericLenses,
 };
