@@ -22,13 +22,19 @@ const { port } = require('./utils/port');
  * @param {object} [options]
  * @param {PostgresConnectionDetails} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_APP_NAME`.
- * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
+ * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`.
+ * @param {boolean} [options.silentMigrations] Defaults to `false`. If `true`, migration logs will not be output.
+ *   This is useful for environments in which a full migration from start to finish is regularly performed, like CI.
+ *   Some projects have thousands and thousands of lines of migrations.
  * @param {DbMigrateCmdOptions} [options.dbMigrateCmdOptions]
  */
 async function syncDbMigrations(options) {
   const doStartDummyExpressServer = options?.doStartDummyExpressServer ?? true;
   logger.info('syncDbMigrations() - syncing..');
   const dbMigrate = await getDbMigrateInstance(options?.postgresConnection, options?.dbMigrateCmdOptions);
+  if (options?.silentMigrations ?? false) {
+    dbMigrate.silence(true);
+  }
   const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
   if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
   await dbMigrate.up();

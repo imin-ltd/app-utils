@@ -20,12 +20,16 @@ export type DbMigrateCmdOptions = {
  * @param {object} [options]
  * @param {PostgresConnectionDetails} [options.postgresConnection] If excluded, defaults to using, from environment vars:
  *   `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_APP_NAME`.
- * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`
+ * @param {boolean} [options.doStartDummyExpressServer] Defaults to `true`.
+ * @param {boolean} [options.silentMigrations] Defaults to `false`. If `true`, migration logs will not be output.
+ *   This is useful for environments in which a full migration from start to finish is regularly performed, like CI.
+ *   Some projects have thousands and thousands of lines of migrations.
  * @param {DbMigrateCmdOptions} [options.dbMigrateCmdOptions]
  */
 export function syncDbMigrations(options?: {
     postgresConnection?: import("./postgres").PostgresConnectionDetails | undefined;
     doStartDummyExpressServer?: boolean | undefined;
+    silentMigrations?: boolean | undefined;
     dbMigrateCmdOptions?: DbMigrateCmdOptions | undefined;
 } | undefined): Promise<void>;
 /**
