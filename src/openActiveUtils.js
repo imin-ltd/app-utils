@@ -1,4 +1,3 @@
-// TODO maybe move this to common as it's also used in validator?
 const _ = require('lodash');
 
 const atSignFieldsWithoutPrefix = ['type', 'id'];
