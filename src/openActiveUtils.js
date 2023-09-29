@@ -22,14 +22,13 @@ function recursivelyRemoveAtSigns(data) {
     return data;
   }
 
+  /** @type {Record<string, unknown>} */
   const replaced = {};
   for (const [key, value] of Object.entries(data)) {
     if (atSignFieldsWithPrefix.includes(key)) {
       const replacedKey = key.substring(1, key.length);
-      // @ts-ignore
       replaced[replacedKey] = recursivelyRemoveAtSigns(value);
     } else {
-      // @ts-ignore
       replaced[key] = recursivelyRemoveAtSigns(value);
     }
   }
@@ -72,6 +71,7 @@ function recursivelySetAtSigns(data) {
     return null;
   }
 
+  /** @type {Record<string, unknown>} */
   const replaced = {};
   for (const [key, value] of Object.entries(data)) {
     const transformedValue = recursivelySetAtSigns(value);
@@ -80,10 +80,9 @@ function recursivelySetAtSigns(data) {
     }
     if (atSignFieldsWithoutPrefix.includes(key)) {
       const replacedKey = `@${key}`;
-      // @ts-ignore
+
       replaced[replacedKey] = recursivelySetAtSigns(value);
     } else {
-      // @ts-ignore
       replaced[key] = recursivelySetAtSigns(value);
     }
   }
