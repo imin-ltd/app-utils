@@ -5,6 +5,7 @@ const { syncDbMigrations } = require('./syncDbMigrations');
 const { validateReq, validateReqQuery } = require('./expressUtils');
 const { getHerokuReleaseInfo } = require('./herokuUtils');
 const { Lenses } = require('./lenses');
+const {recursivelyRemoveAtSigns, recursivelySetAtSigns } = require('./openActiveUtils')
 
 module.exports = {
   logger,
@@ -19,4 +20,8 @@ module.exports = {
     getHerokuReleaseInfo,
   },
   Lenses,
+  openActiveUtils: {
+    recursivelyRemoveAtSigns,
+    recursivelySetAtSigns,
+  },
 };
