@@ -193,3 +193,7 @@ Example usage:
 > getHerokuReleaseInfo();
 { herokuReleaseVersion: 'v925', herokuSlugCommit: 'bec18bdb698457c8a8e5dbf2828bdeeac4918166' }
 ```
+
+# Contributing
+
+Run `npm run build` before committing (TODO do this automatically).
