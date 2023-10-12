@@ -51,6 +51,14 @@ The logger will make sure to structure the Error object correctly, so that it's 
 
 If the error is an **Axios error**, we have more special handling still! Axios errors are famously large and contain lots and lots of generally irrelevant information. So if you include an axios error in the `error` field, logger will only include key details about the HTTP request and response.
 
+### JSON formatting
+
+In [Production mode](#production-mode), logs are outputted as JSON. This uses a slightly modified form of JSON stringification which has the following augmentations:
+
+* Circular JSON is supported (using [CircularJSON](https://github.com/WebReflection/circular-json)).
+* BigInts are converted to strings (rather than erroring).
+* Errors are converted to objects, so that `name`, `message` and `stack` are included in the output.
+
 ## PostgreSQL
 
 You can use `@imin/app-utils` to connect with a PostgreSQL database. In order to do this, it is advised to set up environment variables for PostgreSQL connection details (detailed below), though in some cases, connection details can be provided programmatically.
