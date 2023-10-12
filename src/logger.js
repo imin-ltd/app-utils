@@ -119,10 +119,8 @@ const logger = winston.createLogger({
     if (error !== undefined) {
       const loggableError = errorToLoggableObject(error);
       return CircularJSON.stringify({ ...rest, error: loggableError }, jsonStringifyReplacerForLogger);
-      // return CircularJSON.stringify({ ...rest, error: loggableError });
     }
     return CircularJSON.stringify({ ...rest }, jsonStringifyReplacerForLogger);
-    // return CircularJSON.stringify({ ...rest });
   }),
   transports: [
     new winston.transports.Console({
