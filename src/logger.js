@@ -118,9 +118,9 @@ const logger = winston.createLogger({
     const { error, ...rest } = info;
     if (error !== undefined) {
       const loggableError = errorToLoggableObject(error);
-      return CircularJSON.stringify({ ...rest, error: loggableError });
+      return CircularJSON.stringify({ ...rest, error: loggableError }, jsonStringifyReplacerForLogger);
     }
-    return CircularJSON.stringify({ ...rest });
+    return CircularJSON.stringify({ ...rest }, jsonStringifyReplacerForLogger);
   }),
   transports: [
     new winston.transports.Console({
@@ -129,6 +129,23 @@ const logger = winston.createLogger({
     }),
   ],
 });
+
+/**
+ * @param {string} key
+ * @param {unknown} value
+ */
+function jsonStringifyReplacerForLogger(key, value) {
+  /* BigInts cannot be serialized to JSON (why though? JSON has no number size
+  limit. Anyway..). Converting them to strings is acceptable here as they are
+  just being logged. */
+  if (typeof value === 'bigint') {
+    return String(value);
+  }
+  if (value instanceof Error) {
+    return errorToLoggableObject(value);
+  }
+  return value;
+}
 
 module.exports = {
   logger,

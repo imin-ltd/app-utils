@@ -10,17 +10,17 @@ export type Organizer = import('@imin/shared-data-types/src/modellingSpec/common
 export type OfferType = import('@imin/shared-data-types/src/modellingSpec/common').OfferType;
 export type SearchIsBookingRequestFacilityUseType = import('@imin/shared-data-types/src/search/SearchIsBookingRequestFacilityUseSlot').SearchIsBookingRequestFacilityUseType;
 export namespace Lenses {
-    const seller: import('ramda').Lens<TOpportunity, Organizer>;
-    const providerId: import('ramda').Lens<TOpportunity, string>;
-    const name: import('ramda').Lens<TOpportunity, string>;
-    const place: import('ramda').Lens<TOpportunity, PlaceType>;
-    const facilityUse: import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>;
-    const offers: import('ramda').Lens<TOpportunity, OfferType[]>;
-    const aggregateOffer: R.Lens<TOpportunity, any>;
-    const remainingCapacity: import('ramda').Lens<TOpportunity, number>;
-    const maxCapacity: import('ramda').Lens<TOpportunity, number>;
+    let seller: import('ramda').Lens<TOpportunity, Organizer>;
+    let providerId: import('ramda').Lens<TOpportunity, string>;
+    let name: import('ramda').Lens<TOpportunity, string>;
+    let place: import('ramda').Lens<TOpportunity, PlaceType>;
+    let facilityUse: import('ramda').Lens<TOpportunity, SearchIsBookingRequestFacilityUseType>;
+    let offers: import('ramda').Lens<TOpportunity, OfferType[]>;
+    let aggregateOffer: R.Lens<TOpportunity, any>;
+    let remainingCapacity: import('ramda').Lens<TOpportunity, number>;
+    let maxCapacity: import('ramda').Lens<TOpportunity, number>;
     namespace util {
-        const throwErrorIfUsed: import('ramda').Lens<any, any>;
+        let throwErrorIfUsed: import('ramda').Lens<any, any>;
     }
 }
 import R = require("ramda");
