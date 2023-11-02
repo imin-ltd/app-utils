@@ -36,8 +36,8 @@ async function syncDbMigrations(options) {
     dbMigrate.silence(true);
   }
   const dummyServer = doStartDummyExpressServer ? await startDummyExpressServer() : null;
-  if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
   await dbMigrate.up();
+  if (dummyServer != null) { await stopDummyExpressServer(dummyServer); }
   logger.info('syncDbMigrations() - synced');
 }
 
