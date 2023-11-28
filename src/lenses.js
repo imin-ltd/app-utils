@@ -110,6 +110,11 @@ const Lenses = {
     scs: R.lensPath(['maximumAttendeeCapacity']),
     slot: R.lensPath(['maximumUses']),
   }),
+  /** @type {import('ramda').Lens<TOpportunity, Array<string>> } */
+  iminTag: opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'superEvent', '_imin:tag']),
+    // Interestingly slots do not have tags in the FaciityUse or the Slot
+  }),
 
   util: {
     /**
