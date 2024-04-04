@@ -6,9 +6,12 @@ const path = require('path');
 const _ = require('lodash');
 
 const { httpFetchJsonld } = require('./jsonLdUtils');
-const { ConceptScheme } = require('./types/skos');
 
 const readFile = util.promisify(fs.readFile);
+
+/**
+ * @typedef {import('./types/skos').ConceptScheme} ConceptScheme
+ */
 
 /**
  * @param {string} url
