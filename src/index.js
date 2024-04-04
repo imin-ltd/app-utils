@@ -35,5 +35,8 @@ module.exports = {
   jsonLdUtils: {
     httpFetchJsonld,
   },
-  skosUtils: {},
+  skosUtils: {
+    getConceptSchemeFromFilePath,
+    getConceptSchemeFromUrl,
+  },
 };
