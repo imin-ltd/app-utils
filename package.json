@@ -9,7 +9,7 @@
     "db-migrate-down": "./src/cli/db-migrate-down.js"
   },
   "scripts": {
-    "build": "tsc && ",
+    "build": "tsc",
     "clean-built-dts-types": "rm -rf built-types/types",
     "copy-dts-to-built": "copyfiles -u 1 src/types/*.d.ts built-types",
     "test": "tsc",
@@ -34,7 +34,7 @@
     "@types/pg": "^7.14.7",
     "axios": "^0.25.0",
     "copyfiles": "^2.4.1",
-    "husky": "^9.0.11",
+    "husky": "^4.3.0",
     "typescript": "^5.2.2"
   },
   "engines": {
@@ -60,7 +60,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run tsc && npm run clean-built-dts-types && npm run copy-dts-to-built && git add built-types/*"
+      "pre-commit": "npm run build && npm run clean-built-dts-types && npm run copy-dts-to-built && git add built-types/*"
     }
   }
 }
