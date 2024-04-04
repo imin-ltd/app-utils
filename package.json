@@ -39,6 +39,7 @@
   "dependencies": {
     "@imin/shared-data-types": "github:imin-ltd/shared-data-types#2d470a5",
     "@imin/speck": "github:imin-ltd/speck#1c05dac",
+    "@openactive/skos": "^1.4.3",
     "@snyk/protect": "^1.1232.0",
     "@types/ramda": "^0.28.15",
     "circular-json": "^0.5.9",
