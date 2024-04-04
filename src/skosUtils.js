@@ -10,12 +10,8 @@ const { httpFetchJsonld } = require('./jsonLdUtils');
 const readFile = util.promisify(fs.readFile);
 
 /**
- * @typedef {import('./types/skos').ConceptScheme} ConceptScheme
- */
-
-/**
  * @param {string} url
- * @returns {Promise<ConceptScheme>}
+ * @returns {Promise<import('./types/skos').ConceptScheme>}
  */
 async function getConceptSchemeFromUrl(url) {
   const conceptSchemeRaw = await httpFetchJsonld(url);
@@ -24,12 +20,17 @@ async function getConceptSchemeFromUrl(url) {
 
 /**
  * @param {string} jsonLdFilePath
- * @returns {Promise<ConceptScheme>}
+ * @returns {Promise<import('./types/skos').ConceptScheme>}
  */
 async function getConceptSchemeFromFilePath(jsonLdFilePath) {
   const activityListCacheRaw = await readFile(jsonLdFilePath);
   const activityListCacheJson = JSON.parse(String(activityListCacheRaw));
   return new skos.ConceptScheme(activityListCacheJson);
+}
+
+async function a() {
+  const f = await getConceptSchemeFromUrl('https://www.openactive.io/activity-list/activity-list.jsonld');
+  const e = f.getAllConcepts();
 }
 
 module.exports = {
