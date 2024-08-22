@@ -47,10 +47,11 @@ async function getPgConfig(postgresConnectionOverride) {
     application_name: appName,
   };
   if (isRds) {
-    // https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
-    pgConfig.ssl = {
-      ca: await getRdsCert(),
-    };
+    // pgConfig.ssl
+    // // https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
+    // pgConfig.ssl = {
+    //   ca: await getRdsCert(),
+    // };
   }
   return pgConfig;
 }
