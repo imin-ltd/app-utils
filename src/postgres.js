@@ -47,7 +47,7 @@ async function getPgConfig(postgresConnectionOverride) {
     application_name: appName,
   };
   if (isRds) {
-    // pgConfig.ssl
+    // TODO we need to understand the new process for doing this: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html, which seems more complicated now
     // // https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
     // pgConfig.ssl = {
     //   ca: await getRdsCert(),
