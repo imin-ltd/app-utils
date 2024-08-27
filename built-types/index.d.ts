@@ -8,6 +8,9 @@ import { getHerokuReleaseInfo } from "./herokuUtils";
 import { Lenses } from "./lenses";
 import { recursivelyRemoveAtSigns } from "./openActiveUtils";
 import { recursivelySetAtSigns } from "./openActiveUtils";
+import { httpFetchJsonld } from "./jsonLdUtils";
+import { getConceptSchemeFromFilePath } from "./skosUtils";
+import { getConceptSchemeFromUrl } from "./skosUtils";
 export declare namespace expressUtils {
     export { validateReq };
     export { validateReqQuery };
@@ -18,5 +21,12 @@ export declare namespace herokuUtils {
 export declare namespace openActiveUtils {
     export { recursivelyRemoveAtSigns };
     export { recursivelySetAtSigns };
+}
+export declare namespace jsonLdUtils {
+    export { httpFetchJsonld };
+}
+export declare namespace skosUtils {
+    export { getConceptSchemeFromFilePath };
+    export { getConceptSchemeFromUrl };
 }
 export { logger, kongSecretMiddleware, postgres, syncDbMigrations, Lenses };

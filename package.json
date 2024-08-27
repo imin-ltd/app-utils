@@ -10,6 +10,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "clean-built-dts-types": "rm -rf built-types/types",
+    "copy-dts-to-built": "copyfiles -u 1 src/types/*.d.ts built-types",
     "test": "tsc",
     "prepare": "npm run snyk-protect",
     "snyk-protect": "snyk-protect"
@@ -31,6 +33,8 @@
     "@types/node": "^14.14.19",
     "@types/pg": "^7.14.7",
     "axios": "^0.25.0",
+    "copyfiles": "^2.4.1",
+    "husky": "^4.3.0",
     "typescript": "^5.2.2"
   },
   "engines": {
@@ -39,6 +43,7 @@
   "dependencies": {
     "@imin/shared-data-types": "github:imin-ltd/shared-data-types#2d470a5",
     "@imin/speck": "github:imin-ltd/speck#1c05dac",
+    "@openactive/skos": "^1.4.3",
     "@snyk/protect": "^1.1232.0",
     "@types/ramda": "^0.28.15",
     "circular-json": "^0.5.9",
@@ -52,5 +57,10 @@
     "ramda": "^0.28.0",
     "snyk": "^1.1232.0",
     "winston": "^3.10.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && npm run clean-built-dts-types && npm run copy-dts-to-built && git add built-types/*"
+    }
   }
 }
