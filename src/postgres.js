@@ -48,10 +48,10 @@ async function getPgConfig(postgresConnectionOverride) {
   };
   if (isRds) {
     // TODO we need to understand the new process for doing this: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html, which seems more complicated now
-    // // https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
-    // pgConfig.ssl = {
-    //   ca: await getRdsCert(),
-    // };
+    // https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
+    pgConfig.ssl = {
+      ca: await getRdsCert(),
+    };
   }
   return pgConfig;
 }
@@ -68,7 +68,7 @@ function getAndAssertEnvVar(envVarName) {
 }
 
 const getRdsCert = pMemoize(async () => {
-  const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-2019-root.pem'));
+  const raw = await fs.readFile(path.join(__dirname, '..', 'config', 'rds-ca-global-bundle.pem'));
   return raw.toString();
 });
 
