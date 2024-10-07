@@ -13,6 +13,9 @@ const R = require('ramda');
  */
 
 /**
+ * The FacilitySlot has a facilityUse property, which is a FacilityUse or an IndividualFacilityUse.
+ * This lens creator ensures you can focus in on a property always at the FacilityUse level.
+ * 
  * @param {string[]} propertyPath
  * @returns {import('ramda').Lens<SearchIsBookingRequestFacilityUseSlotType, any>}
  */
@@ -115,7 +118,11 @@ const Lenses = {
     scs: R.lensPath(['superEvent', 'superEvent', '_imin:tag']),
     // Interestingly slots do not have tags in the FaciityUse or the Slot
   }),
-
+  /** @type {import('ramda').Lens<TOpportunity, string> } */
+  eventSeriesOrFacilityUseIdentifier: opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'superEvent', 'identifier']),
+    slot: createSlotLensForFacilityUseProperty(['identifier']),
+  }),
   util: {
     /**
      * Use this to specify a lens that should not actually be used
