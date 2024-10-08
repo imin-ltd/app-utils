@@ -119,8 +119,8 @@ const Lenses = {
     // Interestingly slots do not have tags in the FaciityUse or the Slot
   }),
   /** @type {import('ramda').Lens<TOpportunity, string> } */
-  eventSeriesOrFacilityUseIdentifier: opportunityTypeLens({
-    scs: R.lensPath(['superEvent', 'superEvent', 'identifier']),
+  sessionSeriesOrFacilityUseIdentifier: opportunityTypeLens({
+    scs: R.lensPath(['superEvent', 'identifier']),
     slot: createSlotLensForFacilityUseProperty(['identifier']),
   }),
   util: {

@@ -19,6 +19,8 @@ export namespace Lenses {
     let aggregateOffer: R.Lens<TOpportunity, any>;
     let remainingCapacity: import('ramda').Lens<TOpportunity, number>;
     let maxCapacity: import('ramda').Lens<TOpportunity, number>;
+    let iminTag: import('ramda').Lens<TOpportunity, Array<string>>;
+    let eventSeriesOrFacilityUseIdentifier: import('ramda').Lens<TOpportunity, string>;
     namespace util {
         let throwErrorIfUsed: import('ramda').Lens<any, any>;
     }
