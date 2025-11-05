@@ -37,8 +37,8 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@imin/shared-data-types": "github:imin-ltd/shared-data-types#e95586489e21a665c2c1acec108c5fc23854a350",
-    "@imin/speck": "github:imin-ltd/speck#89c69e6dad94c9f8142e78b2421cca2b1ece00ea",
+    "@imin/shared-data-types": "github:imin-ltd/shared-data-types#d96ebc9122682815c9934f65d22d4def0c83d700",
+    "@imin/speck": "github:imin-ltd/speck#b8ed0eb7429ed4a2753ec73a9ef2a57432687ae1",
     "@snyk/protect": "^1.1232.0",
     "@types/ramda": "^0.28.15",
     "circular-json": "^0.5.9",
