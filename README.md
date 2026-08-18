@@ -1,6 +1,6 @@
 # app-utils
 
-Core functionality for imin apps.
+Shared logging and database utilities for Node.js apps.
 
 ## Logger
 
