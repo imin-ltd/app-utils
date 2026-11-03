@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "tsc",
+    "test": "tsc && node --test 'test/**/*.test.js'",
     "prepare": "npm run snyk-protect",
     "snyk-protect": "snyk-protect"
   },

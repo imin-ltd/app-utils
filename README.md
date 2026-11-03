@@ -194,6 +194,66 @@ Example usage:
 { herokuReleaseVersion: 'v925', herokuSlugCommit: 'bec18bdb698457c8a8e5dbf2828bdeeac4918166' }
 ```
 
+## Platform Fees
+
+For some Broker × Data Source pairs, imin adds a platform fee on top of the Seller's base price. Some of that fee is rebated to the Seller, and the rest goes to imin. For a base price P:
+
+* **F** (platform fee) = round(P × `feeRate`)
+* **C** (rebate to the Seller) = round(F × `feeRebateRate`)
+* The Customer pays **P + F**
+* Stripe's `application_fee_amount` (what imin keeps) is **F − C**
+
+Search (which displays fee-inclusive prices) and Booking (which charges them) must agree to the penny. So both must use this module for the config and the calculation, rather than re-implementing either. This also makes syncing config between them easier.
+
+**ENV VARS**:
+
+* `PLATFORM_FEES` (Optional): JSON, keyed by Broker identifier (e.g. `vivify`) and then by Data Source identifier (e.g. `bookableea`). These are the same identifiers that Booking uses for Brokers and Data Sources. If unset or empty, there are no fees. e.g.
+
+  ```
+  PLATFORM_FEES={"vivify":{"perDataSource":{"bookableea":{"feeRate":0.08,"feeRebateRate":0.1}}}}
+  ```
+
+  * `feeRate` (REQUIRED): Proportion of the base price that is added as the platform fee. `0` to `1` (e.g. `0.08` for 8%).
+  * `feeRebateRate` (REQUIRED): Proportion of the platform fee that is rebated to the Seller. `0` to `1` (e.g. `0.1` for 10%).
+
+  **Every app that uses this must have the exact same value**, otherwise displayed and charged prices will differ.
+
+### Usage
+
+```js
+const { platformFees } = require('@imin/app-utils');
+
+// Once, at start-up. Throws an InvalidPlatformFeesConfigError if the JSON or its shape is invalid, so that a bad
+// config stops the app from starting
+const platformFeesConfig = platformFees.parsePlatformFeesConfig(process.env.PLATFORM_FEES);
+
+// Per request. Returns `undefined` if no fee applies
+const rates = platformFees.getPlatformFeeRates(platformFeesConfig, {
+  brokerIdentifier: 'vivify',
+  dataSourceId: 'bookableea',
+}); // { feeRate: 0.08, feeRebateRate: 0.1 }
+
+// Integer pence (e.g. for Stripe). Rejects non-integer and negative base prices
+platformFees.calculatePlatformFee({ basePricePence: 1000, ...rates });
+// {
+//   basePricePence: 1000,
+//   platformFeePence: 80,
+//   platformFeeRebatePence: 8,
+//   applicationFeePence: 72,
+//   totalPricePence: 1080,
+// }
+
+// Float pounds (e.g. prices in Search & OpenActive data). Converts to pence, so the result matches what Booking will
+// charge and doesn't pick up floating point noise
+platformFees.applyPlatformFeeToPrice(10, rates); // 10.8
+```
+
+Fractions of a penny are rounded half up (`Math.round(..)`) at each step, e.g. 715p at 7% gives F = round(50.05) = 50p.
+
 # Contributing
 
 Run `npm run build` before committing (TODO do this automatically).
+
+Run tests with `npm test`. This type-checks with `tsc` and then runs the unit tests in `test/` with Node's built-in test runner (`node --test`).
+
+TODO have GitHub CI run tests automatically as part of CI
