@@ -8,6 +8,7 @@ import { getHerokuReleaseInfo } from "./herokuUtils";
 import { Lenses } from "./lenses";
 import { recursivelyRemoveAtSigns } from "./openActiveUtils";
 import { recursivelySetAtSigns } from "./openActiveUtils";
+import platformFees = require("./platformFees");
 export declare namespace expressUtils {
     export { validateReq };
     export { validateReqQuery };
@@ -19,4 +20,4 @@ export declare namespace openActiveUtils {
     export { recursivelyRemoveAtSigns };
     export { recursivelySetAtSigns };
 }
-export { logger, kongSecretMiddleware, postgres, syncDbMigrations, Lenses };
+export { logger, kongSecretMiddleware, postgres, syncDbMigrations, Lenses, platformFees };

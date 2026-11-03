@@ -6,6 +6,7 @@ const { validateReq, validateReqQuery } = require('./expressUtils');
 const { getHerokuReleaseInfo } = require('./herokuUtils');
 const { Lenses } = require('./lenses');
 const {recursivelyRemoveAtSigns, recursivelySetAtSigns } = require('./openActiveUtils')
+const platformFees = require('./platformFees');
 
 module.exports = {
   logger,
@@ -24,4 +25,5 @@ module.exports = {
     recursivelyRemoveAtSigns,
     recursivelySetAtSigns,
   },
+  platformFees,
 };
