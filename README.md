@@ -255,3 +255,5 @@ Fractions of a penny are rounded half up (`Math.round(..)`) at each step, e.g. 7
 Run `npm run build` before committing (TODO do this automatically).
 
 Run tests with `npm test`. This type-checks with `tsc` and then runs the unit tests in `test/` with Node's built-in test runner (`node --test`).
+
+TODO have GitHub CI run tests automatically as part of CI
