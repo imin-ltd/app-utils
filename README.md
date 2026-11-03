@@ -196,14 +196,14 @@ Example usage:
 
 ## Platform Fees
 
-For some Broker × Data Source pairs, imin adds a mandatory platform fee on top of the Seller's base price. For a base price P:
+For some Broker × Data Source pairs, imin adds a platform fee on top of the Seller's base price. Some of that fee is rebated to the Seller, and the rest goes to imin. For a base price P:
 
 * **F** (platform fee) = round(P × `feeRate`)
 * **C** (rebate to the Seller) = round(F × `feeRebateRate`)
 * The Customer pays **P + F**
 * Stripe's `application_fee_amount` (what imin keeps) is **F − C**
 
-Search (which displays fee-inclusive prices) and Booking (which charges them) must agree to the penny. So both must use this module for the config and the calculation, rather than re-implementing either.
+Search (which displays fee-inclusive prices) and Booking (which charges them) must agree to the penny. So both must use this module for the config and the calculation, rather than re-implementing either. This also makes syncing config between them easier.
 
 **ENV VARS**:
 
